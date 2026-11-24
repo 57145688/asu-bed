@@ -1,0 +1,100 @@
+# Datasheet, first drafted by `cheme datasheets draft` from equipment/equipment-list.yaml, pid/P-03.xml.
+# Final (`draft: false`): every value says where it comes from (source); assumed: true marks a
+# value derived on an assumption, to confirm; a `supplier` or `not_applicable` value gives its
+# reason. Schema: `cheme schema datasheet`.
+tag: V-3101
+type: Tank
+service: Cold liquid drain vaporizer (dump)
+draft: false
+operating:
+  pressure:
+    value: atmospheric
+    unit: ''
+    source: 'equipment/equipment-list.yaml notes: atmospheric, vented to a safe location (D-011)'
+design:
+  pressure_barg:
+    value: 0.5
+    unit: barg
+    source: equipment/equipment-list.yaml
+  temperature_degc:
+    value: -196.0
+    unit: degC
+    source: equipment/equipment-list.yaml
+materials:
+  main:
+    value: SS
+    source: equipment/equipment-list.yaml
+dimensions:
+  orientation: vertical
+  outside_diameter:
+    value: 2.0
+    unit: m
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.diameter; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the supplier sets it'
+    assumed: true
+  overall_height:
+    value: 4.0
+    unit: m
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.height; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the supplier sets it'
+    assumed: true
+  head:
+    value: cone_roof
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.head; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the head type is the list''s choice, the
+      supplier sets it'
+    assumed: true
+  support:
+    type:
+      value: none
+      source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.support; ASSUMED at basic
+        engineering (equipment list header, DESIGN.md D-028): the support type is the list''s choice,
+        the supplier sets it'
+      assumed: true
+  tangent_length:
+    value: 3.824
+    unit: m
+    source: 'cheme datasheets fill: layout/plant-model.yaml part V-3101/shell: the generated shell between
+      the heads (the 3D model''s proportions, not a vessel design)'
+    assumed: true
+weights:
+  empty:
+    value: 3.0
+    unit: t
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.weight (empty); ASSUMED
+      (equipment list header, DESIGN.md D-034): typical size of the duty, the item''s basis in its list
+      note; the supplier gives the weight'
+    assumed: true
+nozzles:
+- name: N1
+  dn: 25
+  lines:
+  - LOX-3002
+  source: pid/P-03.xml
+- name: N2
+  dn: 50
+  lines:
+  - VNT-3001
+  source: pid/P-03.xml
+type_specific:
+  diameter_m:
+    value: 2.0
+    unit: m
+    source: equipment/equipment-list.yaml dimensions
+  height_m:
+    value: 4.0
+    unit: m
+    source: equipment/equipment-list.yaml dimensions
+  weight_t:
+    value: 3.0
+    unit: t
+    source: equipment/equipment-list.yaml dimensions
+  volume_m3:
+    value: 12.566
+    unit: m3
+    source: 'equipment/equipment-list.yaml dimensions: pi/4 D^2 x height (overall, including heads and
+      skirt: an upper bound)'
+    assumed: true
+sizing_basis: []
+notes: Atmospheric, receives cold box drains and LOX purge when the tank is unavailable; vent to safe
+  location (D-011). ASSUMED.

@@ -1,0 +1,64 @@
+# The ASU's characterised factors (D-092). Schema: `cheme schema lca_factors`.
+#
+# Background: the packaged open profile desnz-ghg-2026 (UK Government GHG Conversion Factors
+# 2026, DESNZ, Open Government Licence v3.0; ids desnz-ghg-2026:<id>, see core
+# docs/framework/lca.md). It is climate change only and UK: the site's country is not decided
+# (design basis: ASSUMED coastal industrial site), so lca/lca.yaml marks each use a proxy and
+# the result is a screening carbon footprint. Below are the ASU's own estimates derived from it,
+# each with its basis. Flows no open factor covers are declared missing in lca/lca.yaml: they
+# are gaps (lca/gaps.csv), never 0. With a licensed database, rerun the same foreground with
+# backend: brightway locally; those results are not published (core docs/framework/lca.md).
+schema: cheme/lca/v1
+kind: lca_factors
+include: [desnz-ghg-2026, eea-ener038-2024]
+categories:
+  # elementary: the plant's own emissions mapped elementary are characterised by IPCC 2021
+  # GWP100 (AR6); the DESNZ factors are AR4/AR5, a method mix the results report
+  - {id: climate-change, title: Climate change, unit: kg CO2-eq, method: "GWP100 (DESNZ 2026: AR4/AR5; direct emissions: IPCC 2021)", elementary: ipcc2021-gwp100}
+factors:
+  - id: cooling-water
+    title: Cooling water system, per heat rejected
+    unit: MWh
+    values: {climate-change: 1.8436}
+    status: ESTIMATE
+    source: "10 kWh electricity per MWh rejected (pumps and fans, ASSUMED) x desnz-ghg-2026:electricity-gb 0.18436 kg CO2e/kWh"
+    source_id: desnz-ghg-2026
+    year: 2026
+    location: GB
+    basis: "the circulating pumps' and cooling-tower fans' electricity only, ~10 kWh/MWh rejected (ASSUMED, concept stage); make-up water and chemicals not counted"
+    validity: "a recirculating cooling water system with a mechanical-draught tower on the UK grid; not for once-through or air cooling"
+  - id: concrete-m3
+    title: Concrete, per m3
+    unit: m3
+    values: {climate-change: 285.13}
+    status: ESTIMATE
+    source: "desnz-ghg-2026:concrete 118.80307 kg CO2e/t x 2.4 t/m3 (ASSUMED density of reinforced concrete)"
+    source_id: desnz-ghg-2026
+    year: 2026
+    location: GB
+    basis: "DESNZ primary concrete per t times an ASSUMED density of 2.4 t/m3; the reinforcing steel is not included"
+    validity: "plain or lightly reinforced structural concrete; heavily reinforced foundations are higher"
+  # the cooling water estimate (10 kWh electricity per MWh rejected, ASSUMED) on each regional
+  # grid of the EEA profile, for the regional scenarios (D-107)
+  - id: cooling-water-nl
+    title: Cooling water system, per heat rejected, NL grid
+    unit: MWh
+    values: {climate-change: 2.45}
+    status: ESTIMATE
+    source: "10 kWh electricity per MWh rejected (pumps and fans, ASSUMED) x eea-ener038-2024:electricity-nl 0.245 kg CO2e/kWh"
+    source_id: eea-ener038-2024
+    year: 2024
+    location: NL
+    basis: "the circulating pumps' and cooling-tower fans' electricity only, ~10 kWh/MWh rejected (ASSUMED, concept stage), on the NL grid at generation (EEA, direct emissions); make-up water and chemicals not counted"
+    validity: "a recirculating cooling water system with a mechanical-draught tower in the Netherlands; not for once-through or air cooling"
+  - id: cooling-water-de
+    title: Cooling water system, per heat rejected, DE grid
+    unit: MWh
+    values: {climate-change: 2.91}
+    status: ESTIMATE
+    source: "10 kWh electricity per MWh rejected (pumps and fans, ASSUMED) x eea-ener038-2024:electricity-de 0.291 kg CO2e/kWh"
+    source_id: eea-ener038-2024
+    year: 2024
+    location: DE
+    basis: "the circulating pumps' and cooling-tower fans' electricity only, ~10 kWh/MWh rejected (ASSUMED, concept stage), on the DE grid at generation (EEA, direct emissions); make-up water and chemicals not counted"
+    validity: "a recirculating cooling water system with a mechanical-draught tower in Germany; not for once-through or air cooling"

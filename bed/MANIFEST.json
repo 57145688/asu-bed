@@ -1,0 +1,263 @@
+{
+  "generated_at": "2026-11-24T20:53:16.466975+00:00",
+  "plant": "ASU 深冷空分（asu-1, GoO2=99.6% / 400 t/d 液氧 / 6000 Nm³/h 氮 / 18000 kW 电）",
+  "stage": "basic",
+  "kind": "BED 基础工程设计包（basic engineering design）",
+  "level": "BED 基础级：用于方案比选与下一阶段 FEED 设计输入；不用于施工、采购、许可或安全决策",
+  "upstream": "ChemE-as-Code/process-library process:asu-1",
+  "plant_summary": {
+    "feeds": 2,
+    "products": 7,
+    "blocks": 4,
+    "steps": 21,
+    "streams": 50,
+    "hazop_studies": [
+      "H-01",
+      "H-02",
+      "H-03",
+      "H-04"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "DESIGN.md",
+      "bytes": 471690,
+      "sha256_16": "69ecd5d193ed9b54"
+    },
+    {
+      "path": "dexpi/dexpi-check.json",
+      "bytes": 1055,
+      "sha256_16": "48bd4d927e76ab60"
+    },
+    {
+      "path": "dexpi/dexpi-check.md",
+      "bytes": 509,
+      "sha256_16": "7a295bc2f24b1fed"
+    },
+    {
+      "path": "dwsim/design-basis.yaml",
+      "bytes": 4669,
+      "sha256_16": "0498974de4c64d23"
+    },
+    {
+      "path": "dwsim/simulation-run.json",
+      "bytes": 66336,
+      "sha256_16": "3e227e41149c4c41"
+    },
+    {
+      "path": "dwsim/simulation-spec.yaml",
+      "bytes": 11839,
+      "sha256_16": "74863bd0654b7083"
+    },
+    {
+      "path": "dwsim/simulation-summary.md",
+      "bytes": 1965,
+      "sha256_16": "4280863f6ca595bd"
+    },
+    {
+      "path": "dwsim/stream-table.csv",
+      "bytes": 11793,
+      "sha256_16": "d5d3e03ab2f5e988"
+    },
+    {
+      "path": "estimate/mto.md",
+      "bytes": 18170,
+      "sha256_16": "c92bc44f1195640b"
+    },
+    {
+      "path": "estimate/tea.md",
+      "bytes": 17468,
+      "sha256_16": "2129795b835a8cf0"
+    },
+    {
+      "path": "hazop/H-01-full-report.html",
+      "bytes": 70361,
+      "sha256_16": "f22130f4b6c0d6ba"
+    },
+    {
+      "path": "hazop/H-01-full-report.md",
+      "bytes": 58779,
+      "sha256_16": "429d6df01aa38f22"
+    },
+    {
+      "path": "hazop/H-02-full-report.html",
+      "bytes": 65388,
+      "sha256_16": "eab5faf15536f271"
+    },
+    {
+      "path": "hazop/H-02-full-report.md",
+      "bytes": 55481,
+      "sha256_16": "48447764af9f791b"
+    },
+    {
+      "path": "hazop/H-03-full-report.html",
+      "bytes": 76130,
+      "sha256_16": "6c7d639d5682f948"
+    },
+    {
+      "path": "hazop/H-03-full-report.md",
+      "bytes": 63269,
+      "sha256_16": "38d1b1fe9e64d5e3"
+    },
+    {
+      "path": "hazop/H-04-full-report.html",
+      "bytes": 133019,
+      "sha256_16": "b79fe3ab4292d850"
+    },
+    {
+      "path": "hazop/H-04-full-report.md",
+      "bytes": 113692,
+      "sha256_16": "7bcb03df45436ce2"
+    },
+    {
+      "path": "hazop/hazop-draft.md",
+      "bytes": 13680,
+      "sha256_16": "094953a16e5bdff4"
+    },
+    {
+      "path": "hazop/hazop-worksheet.csv",
+      "bytes": 25057,
+      "sha256_16": "24bfd36032b4078a"
+    },
+    {
+      "path": "lca/cheme-lca-inventory.csv",
+      "bytes": 20212,
+      "sha256_16": "b229a5596b00a9da"
+    },
+    {
+      "path": "lca/cheme-lca-results.csv",
+      "bytes": 9570,
+      "sha256_16": "bc81556a19677cfe"
+    },
+    {
+      "path": "lca/cheme-lca-results.md",
+      "bytes": 18368,
+      "sha256_16": "65ac37e3a816d75b"
+    },
+    {
+      "path": "pid/P-01.svg",
+      "bytes": 131636,
+      "sha256_16": "2652637c5c9301fb"
+    },
+    {
+      "path": "pid/P-02.svg",
+      "bytes": 100000,
+      "sha256_16": "3a90cd2edfe99334"
+    },
+    {
+      "path": "pid/P-03.svg",
+      "bytes": 145265,
+      "sha256_16": "1b6f580a816513a1"
+    },
+    {
+      "path": "pid/P-04.svg",
+      "bytes": 256790,
+      "sha256_16": "eea10b0396e45bff"
+    },
+    {
+      "path": "plant.yaml",
+      "bytes": 1729,
+      "sha256_16": "29c11e86f63f7876"
+    },
+    {
+      "path": "psi/cases/AIR-1001.inp",
+      "bytes": 99,
+      "sha256_16": "2a11e03d7eabe05e"
+    },
+    {
+      "path": "psi/cases/AIR-1004.inp",
+      "bytes": 766,
+      "sha256_16": "11a84d9bb758f517"
+    },
+    {
+      "path": "psi/cases/AIR-1004.out",
+      "bytes": 4894,
+      "sha256_16": "88ee153018063988"
+    },
+    {
+      "path": "psi/cases/AIR-1005.inp",
+      "bytes": 764,
+      "sha256_16": "a4d9bd938329f066"
+    },
+    {
+      "path": "psi/cases/AIR-1005.out",
+      "bytes": 4894,
+      "sha256_16": "8ec213de7cd26a51"
+    },
+    {
+      "path": "psi/cases/AIR-1006.inp",
+      "bytes": 765,
+      "sha256_16": "317a9d79de0af6b4"
+    },
+    {
+      "path": "psi/cases/AIR-1006.out",
+      "bytes": 4894,
+      "sha256_16": "92440ae5f2c5dd6e"
+    },
+    {
+      "path": "psi/cases/WN-1001.inp",
+      "bytes": 765,
+      "sha256_16": "332c4d144ff9d543"
+    },
+    {
+      "path": "psi/cases/WN-1001.out",
+      "bytes": 7003,
+      "sha256_16": "883fa8a85813b414"
+    },
+    {
+      "path": "psi/cases/WN-1002.inp",
+      "bytes": 762,
+      "sha256_16": "c459a9c1fe309069"
+    },
+    {
+      "path": "psi/cases/WN-1002.out",
+      "bytes": 4893,
+      "sha256_16": "ce41574ff534a29f"
+    },
+    {
+      "path": "psi/cases/WN-3001.inp",
+      "bytes": 764,
+      "sha256_16": "563d92d03be65eaa"
+    },
+    {
+      "path": "psi/cases/WN-3001.out",
+      "bytes": 4893,
+      "sha256_16": "584e5aee8bddbfb8"
+    },
+    {
+      "path": "psi/cases/WN-3002.inp",
+      "bytes": 763,
+      "sha256_16": "5ba2929fcf021938"
+    },
+    {
+      "path": "psi/cases/WN-3002.out",
+      "bytes": 4893,
+      "sha256_16": "64c881e06cee1f63"
+    },
+    {
+      "path": "psi/cases/WN-3003.inp",
+      "bytes": 764,
+      "sha256_16": "8ae48e0e59800508"
+    },
+    {
+      "path": "psi/cases/WN-3003.out",
+      "bytes": 4893,
+      "sha256_16": "d0d9bc8d07bab0ab"
+    },
+    {
+      "path": "psi/stress-report.md",
+      "bytes": 2080,
+      "sha256_16": "ec637a25385b2b24"
+    },
+    {
+      "path": "psi/stress-results.json",
+      "bytes": 5010,
+      "sha256_16": "8567a2027b0071b5"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4300,
+      "sha256_16": "2376aef7d2b33219"
+    }
+  ]
+}

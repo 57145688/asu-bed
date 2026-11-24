@@ -1,0 +1,140 @@
+# Equipment list. Schema: `cheme schema equipment`.
+# Tags per DESIGN.md D-007. Design P/T are concept values (ASSUMED) unless stated otherwise.
+# Silencers and safety valves are DEXPI piping components: listed in DESIGN.md D-020 / section 4.
+# Cryogenic items list the minimum design temperature; the maximum is in the notes.
+# dimensions: overall sizes in m (vertical: bottom of skirt/legs to top of head; horizontal: over
+# both heads or channels, height = top of shell on its saddles; box: length x width x height),
+# all ASSUMED at basic engineering, basis in DESIGN.md D-028 (vendor data in detail engineering).
+# weight: empty weight in t, ASSUMED: of the items lifted whole in maintenance (machines,
+# exchangers, heater, vaporizers) from typical sizes of the duty (D-034); of the columns,
+# adsorbers, tanks, the filter house and the MAC train from their shell thickness and area
+# (D-081 (5)), for the LCA construction inventory. The shop-built ones (columns, adsorbers,
+# filter house, MAC train) are erected once before the piping: the lifting study lists them as
+# erection lifts, their findings accepted in checks/checks.yaml for the construction lifting
+# plan. lift_weight: the heaviest crane lift where it is less than the whole item: the MAC
+# train's motor (D-070); the field-erected tanks' roof fittings (D-081 (10)), never the tank.
+# variant: the machine shape (cryogenic pumps).
+equipment:
+  # ---- P-01 main air compressor and precooling
+  - {tag: F-1101, type: GasFilter, service: MAC inlet air filter, sheet: P-01, design_pressure_barg: 0.1, design_temperature_degc: 50, material: CS galvanized,
+     dimensions: {length: 6, width: 4, height: 8, weight: 10},
+     notes: "Self-cleaning pulse-jet cartridges, rated 90,000 Nm3/h (design 85,840 Nm3/h dry air, D-066); intake away from hydrocarbon sources (D-010). Filter house 6 x 4 x 8 m, empty ~10 t (D-081 (5)). ASSUMED."}
+  - {tag: K-1101, type: CentrifugalCompressor, service: Main air compressor (MAC), sheet: P-01, design_pressure_barg: 8, design_temperature_degc: 180, material: CS / SS impellers,
+     dimensions: {length: 12, width: 6, height: 5, weight: 89, lift_weight: 34},
+     notes: "Integrally geared, 3 stages, rated ~90,000 Nm3/h dry air (design 85,840 Nm3/h at 80 % RH, D-066), 1.0 -> 6.02 bara (D-089), 9.0 MW 6.6 kV motor (was 8.0; 7.29 MW electric / 6.89 MW shaft simulated, D-089, 8.15 MW at 110 % of the rating against 9.0 MW, D-090; condensate S1C from the E-1102 / E-1103 separators), IGV + anti-surge blow-off. Train with gearbox and motor on one base 12 x 6 x 5 m, empty ~89 t (D-034's ~85 t with the 8 MW motor, +4 t for the 9 MW motor, D-081 (5)). Heaviest maintenance lift the 9 MW motor, ~34 t (lift_weight, ASSUMED: the 8 MW motor's ~30 t of D-034 / D-055 (7) pro rata to the rating, D-070; the basis of the 40 t B1 crane; the motor supplier's weight replaces it). ASSUMED."}
+  - {tag: E-1101, type: TubularHeatExchanger, service: MAC 1st intercooler, sheet: P-01, design_pressure_barg: 8, design_temperature_degc: 180, material: CS shell / SS tubes,
+     dimensions: {diameter: 1.6, length: 8, height: 2.4, head: ellipsoidal_2_1, support: saddles, weight: 12},
+     notes: "Cooling water tube side. ASSUMED."}
+  - {tag: E-1102, type: TubularHeatExchanger, service: MAC 2nd intercooler, sheet: P-01, design_pressure_barg: 8, design_temperature_degc: 180, material: CS shell / SS tubes,
+     dimensions: {diameter: 1.6, length: 8, height: 2.4, head: ellipsoidal_2_1, support: saddles, weight: 12},
+     notes: "Cooling water tube side. ASSUMED. Integral moisture separator (vane pack / demister in the air outlet, MAC package) with drain nozzle N5 DN25 to CD-1001 and its float trap ST-1112 (D-058, D-064); separator high-level alarm in the MAC package (supplier, D-065 (6))."}
+  - {tag: E-1103, type: TubularHeatExchanger, service: MAC aftercooler, sheet: P-01, design_pressure_barg: 8, design_temperature_degc: 180, material: CS shell / SS tubes,
+     dimensions: {diameter: 1.4, length: 7, height: 2.2, head: ellipsoidal_2_1, support: saddles, weight: 9},
+     notes: "Air to 40 C. ASSUMED. Integral moisture separator (vane pack / demister in the air outlet, MAC package) with drain nozzle N5 DN25 to CD-1002 and its float trap ST-1113 (D-058, D-064); separator high-level alarm in the MAC package (supplier, D-065 (6))."}
+  - {tag: C-1101, type: ProcessColumn, service: Direct contact aftercooler (DCAC), sheet: P-01, design_pressure_barg: 8, design_temperature_degc: 120, material: CS / SS packing,
+     dimensions: {diameter: 4.0, height: 25, head: ellipsoidal_2_1, support: skirt, weight: 52},
+     notes: "Two packed sections: lower on cooling water to 27 C (699 kW), upper on chilled water from C-1102 to 12 C (634 kW) (D-067, D-089); mist eliminator, air 40 -> 12 C, 6.02 -> 5.92 bara. Empty weight ~52 t without the packing (shell 18 mm, skirt, D-081 (5)). ASSUMED."}
+  - {tag: C-1102, type: ProcessColumn, service: Evaporative cooler (chilled water), sheet: P-01, design_pressure_barg: 1, design_temperature_degc: 60, material: CS lined / PP packing,
+     dimensions: {diameter: 4.5, height: 22, head: ellipsoidal_2_1, support: skirt, weight: 36},
+     notes: "Waste N2 58,074 kg/h (~46,000 Nm3/h, D-067) cools the chilled water to ~10 C, ~700 kW (DCAC upper section and E-3105), ~0.9 t/h evaporated (D-068 (8)); top vent to atmosphere. Empty weight ~36 t without the packing and lining (shell 12 mm minimum, skirt, D-081 (5)). ASSUMED."}
+  - {tag: P-1101A, type: CentrifugalPump, service: DCAC cooling water pump, sheet: P-01, design_pressure_barg: 10, design_temperature_degc: 60, material: CS / SS impeller,
+     dimensions: {length: 2.6, width: 1.0, height: 1.3, support: base_plate, weight: 2.5},
+     notes: "~250 m3/h, duty. ASSUMED."}
+  - {tag: P-1101B, type: CentrifugalPump, service: DCAC cooling water pump (spare), sheet: P-01, design_pressure_barg: 10, design_temperature_degc: 60, material: CS / SS impeller,
+     dimensions: {length: 2.6, width: 1.0, height: 1.3, support: base_plate, weight: 2.5},
+     notes: "Auto-start standby. ASSUMED."}
+  - {tag: P-1102A, type: CentrifugalPump, service: Chilled water pump, sheet: P-01, design_pressure_barg: 10, design_temperature_degc: 60, material: CS / SS impeller,
+     dimensions: {length: 2.0, width: 0.8, height: 1.1, support: base_plate, weight: 1.5},
+     notes: "Rated 44 m3/h (110 % of the D-067 loop, kept: 111 % of 39.6 m3/h, DCAC upper section 34.1 + E-3105 5.4 m3/h, D-080 (2), D-090), ~78 m head to the DCAC upper section at 5.92 bara (D-089), ~12.5 kW shaft at eta 0.75, 15 kW motor (re-selected, D-069; was ~100 m3/h), duty. ASSUMED."}
+  - {tag: P-1102B, type: CentrifugalPump, service: Chilled water pump (spare), sheet: P-01, design_pressure_barg: 10, design_temperature_degc: 60, material: CS / SS impeller,
+     dimensions: {length: 2.0, width: 0.8, height: 1.1, support: base_plate, weight: 1.5},
+     notes: "Auto-start standby. ASSUMED."}
+  # ---- P-02 front-end purification
+  - {tag: V-2101A, type: PressureVessel, service: Molecular sieve adsorber A, sheet: P-02, design_pressure_barg: 8, design_temperature_degc: 250, material: CS (low-temp impact tested),
+     dimensions: {diameter: 4.5, length: 18, height: 6.5, head: ellipsoidal_2_1, support: saddles, weight: 61},
+     notes: "Horizontal adsorber on 2 m saddles (bottom nozzles), alumina + 13X, ~4 h adsorption, regeneration 200 C. Min design temperature 0 C. Empty weight ~61 t without the adsorbent (shell 25 mm, D-081 (5)). ASSUMED."}
+  - {tag: V-2101B, type: PressureVessel, service: Molecular sieve adsorber B, sheet: P-02, design_pressure_barg: 8, design_temperature_degc: 250, material: CS (low-temp impact tested),
+     dimensions: {diameter: 4.5, length: 18, height: 6.5, head: ellipsoidal_2_1, support: saddles, weight: 61},
+     notes: "As V-2101A. ASSUMED."}
+  - {tag: E-2101, type: ElectricHeater, service: Regeneration gas heater, sheet: P-02, design_pressure_barg: 3.5, design_temperature_degc: 260, material: SS sheath / CS shell,
+     dimensions: {length: 3, width: 2, height: 3, weight: 8},
+     notes: "~1.13 MW peak (D-066), waste N2 18,486 kg/h (~14,600 Nm3/h) to 200 C, over-temperature trip TSHH-2107. Heater with terminal box 3 x 2 x 3 m. ASSUMED."}
+  - {tag: F-2101, type: GasFilter, service: Adsorber outlet dust filter, sheet: P-02, design_pressure_barg: 8, design_temperature_degc: 250, material: SS,
+     dimensions: {diameter: 1.5, height: 4, head: ellipsoidal_2_1, support: legs, weight: 4},
+     notes: "Retains sieve fines upstream of E-3101. ASSUMED."}
+  # ---- P-03 cold box
+  - {tag: E-3101, type: PlateHeatExchanger, service: Main heat exchanger (brazed aluminium plate-fin), sheet: P-03, design_pressure_barg: 11, design_temperature_degc: -196, material: Aluminium 3003,
+     dimensions: {length: 4.8, width: 2.4, height: 8.0, weight: 30},
+     notes: "Streams: air, booster air, GOX, GAN, waste N2. Max design temperature 65 C. O2 service (D-009). Bank of 4 cores ~1.2 x 1.2 x 7.3 m side by side with headers, standing vertical (warm end up). ASSUMED."}
+  - {tag: E-3102, type: PlateHeatExchanger, service: Subcooler (rich liquid / LN against waste N2 and GAN), sheet: P-03, design_pressure_barg: 7, design_temperature_degc: -196, material: Aluminium 3003,
+     dimensions: {length: 3.0, width: 1.5, height: 4.5, weight: 8},
+     notes: "Brazed aluminium, two cores side by side with headers (the DN800 waste N2 headers set the length). Max 65 C. ASSUMED."}
+  - {tag: E-3103, type: PlateHeatExchanger, service: Main condenser-reboiler (bath type), sheet: P-03, design_pressure_barg: 7, design_temperature_degc: -196, material: Aluminium 3003,
+     notes: "In LP column sump, kept submerged (D-010). N2 side 7 barg, O2 side 3.5 barg. O2 service. Internal of C-3102: no dimensions and no placement of its own (D-028). ASSUMED."}
+  - {tag: C-3101, type: ProcessColumn, service: HP column, sheet: P-03, design_pressure_barg: 7, design_temperature_degc: -196, material: Aluminium 5083,
+     dimensions: {diameter: 4.2, height: 20, head: ellipsoidal_2_1, support: skirt, weight: 25},
+     notes: "Structured packing or sieve trays, top 5.4 bara; 96,000 kg/h air (+15 % vapour, D-066), 40 theoretical stages. ASSUMED."}
+  - {tag: C-3102, type: ProcessColumn, service: LP column, sheet: P-03, design_pressure_barg: 3.5, design_temperature_degc: -196, material: Aluminium 5083,
+     dimensions: {diameter: 4.2, height: 30, head: ellipsoidal_2_1, support: none, weight: 30},
+     notes: "Structured packing, top 1.3 bara, 59 theoretical stages, crude O2 on 14, Lachmann air on 16, top vapour +20 % (D-066); GOX 99.71 % O2, LOX 99.81 % simulated. O2 service in the lower section. Stands on C-3101 (stacked double column), E-3103 in its sump. ASSUMED."}
+  - {tag: K-3101, type: CentrifugalCompressor, service: Expander-braked air booster, sheet: P-03, design_pressure_barg: 11, design_temperature_degc: 120, material: Aluminium impeller / CS casing,
+     dimensions: {length: 4, width: 3, height: 3, weight: 8},
+     notes: "Same shaft as KT-3101 (compander), 11,500 Nm3/h, 5.6 -> 8.45 bara, 191.6 kW shaft against the expander's 192.4 kW (D-061, no margin). ASSUMED."}
+  - {tag: E-3104, type: TubularHeatExchanger, service: Booster aftercooler, sheet: P-03, design_pressure_barg: 11, design_temperature_degc: 120, material: CS shell / SS tubes,
+     dimensions: {diameter: 1.0, length: 5, height: 1.8, head: ellipsoidal_2_1, support: saddles, weight: 4},
+     notes: "Cooling water, counter-current, air 59.9 -> 30 C, 126 kW, ~64 m2, CW 10.9 m3/h (D-067). Outside cold box. ASSUMED."}
+  - {tag: E-3105, type: TubularHeatExchanger, service: Booster air trim cooler (chilled water), sheet: P-03, design_pressure_barg: 11, design_temperature_degc: 120, material: CS shell / SS tubes,
+     dimensions: {diameter: 0.9, length: 5, height: 1.7, head: ellipsoidal_2_1, support: saddles, weight: 3.5},
+     notes: "Counter-current (one tube pass, straight tubes, floating head pulled to the west: the temperatures cross, D-077), air 30 -> 15 C at 8.45 bara against C-1102 chilled water 10 -> 20 C, 63 kW, ~55 m2, 5.4 m3/h (D-067, D-068 (4)); TICA-3124 on its outlet, set point 15 C, TAH 18.5 C, acting on TV-3124 on the chilled-water supply (D-069). Design data as E-3104 (CW failure puts the 60 C booster air in). Outside cold box, beside E-3104. Dimensions and weight ASSUMED by analogy with E-3104. ASSUMED."}
+  - {tag: KT-3101, type: Turbine, service: Air expansion turbine (Lachmann), sheet: P-03, design_pressure_barg: 11, design_temperature_degc: -196, material: SS / aluminium wheel,
+     dimensions: {length: 3, width: 3, height: 3, weight: 8},
+     notes: "8.25 -> 1.35 bara, inlet -124.7 C, exhaust -178 C, 198 kW refrigeration (D-003, D-061). Overspeed trip SSHH-3108. Oil-lubricated bearings: N2 labyrinth seal gas with PDSLL-3115 permissive/trip, oil mist eliminator on the oil tank vent outside the cold box (D-012). ASSUMED."}
+  - {tag: V-3101, type: Tank, service: Cold liquid drain vaporizer (dump), sheet: P-03, design_pressure_barg: 0.5, design_temperature_degc: -196, material: SS,
+     dimensions: {diameter: 2.0, height: 4.0, head: cone_roof, support: none, weight: 3},
+     notes: "Atmospheric, receives cold box drains and LOX purge when the tank is unavailable; vent to safe location (D-011). ASSUMED."}
+  # ---- P-04 products, storage and backup
+  - {tag: K-4101, type: CentrifugalCompressor, service: GOX compressor, sheet: P-04, design_pressure_barg: 34, design_temperature_degc: 150, material: SS / Monel / copper alloys,
+     dimensions: {length: 10, width: 6, height: 5, weight: 45},
+     notes: "Oil-free, dry gas seals with N2 buffer, 5 stages, 1.15 -> 31 bara, 14,600 Nm3/h GOX (99.71 % O2), suction 13 C, 2.5 MW motor (2,262 kW electric simulated, D-066; 2,414 kW with the API 617 110 % margin, so the next size above 2.3 MW is carried until the vendor confirms, D-075), fire-safe enclosure (D-002, D-012). ASSUMED."}
+  - {tag: E-4101, type: TubularHeatExchanger, service: GOX compressor intercoolers (package), sheet: P-04, design_pressure_barg: 34, design_temperature_degc: 150, material: SS / copper alloy tubes,
+     dimensions: {length: 6, width: 2.8, height: 3.2, weight: 24},
+     notes: "O2 service, cleaned for oxygen. Package of the four intercoolers (DESIGN.md D-063 (5): 59.2 + 74.1 + 73.8 + 73.3 m2): four 1-2 shells of about 1.2 m x 5 m (as E-4102, 73 m2) in two stacked pairs on one frame, envelope 6 x 2.8 x 3.2 m, 4 x 6 t = 24 t (ASSUMED by analogy with E-4102, D-055 (6)); the compressor vendor's package drawing replaces it. ASSUMED."}
+  - {tag: E-4102, type: TubularHeatExchanger, service: GOX compressor aftercooler, sheet: P-04, design_pressure_barg: 34, design_temperature_degc: 150, material: SS / copper alloy tubes,
+     dimensions: {diameter: 1.2, length: 5, height: 2.0, head: ellipsoidal_2_1, support: saddles, weight: 6},
+     notes: "GOX to 40 C. O2 service. ASSUMED."}
+  - {tag: K-4102, type: CentrifugalCompressor, service: GAN compressor, sheet: P-04, design_pressure_barg: 11, design_temperature_degc: 150, material: CS / SS impeller,
+     dimensions: {length: 8, width: 5, height: 4, weight: 25},
+     notes: "Oil-free gas path, 1 stage, 5.2 -> 9 bara, 10,000 Nm3/h, suction 13 C, 238 kW electric simulated (D-061), 315 kW motor. ASSUMED."}
+  - {tag: E-4103, type: TubularHeatExchanger, service: GAN compressor aftercooler, sheet: P-04, design_pressure_barg: 11, design_temperature_degc: 150, material: CS shell / SS tubes,
+     dimensions: {diameter: 1.0, length: 4, height: 1.8, head: ellipsoidal_2_1, support: saddles, weight: 4},
+     notes: "GAN to 40 C. ASSUMED."}
+  - {tag: T-4101, type: Tank, service: LOX storage tank, sheet: P-04, design_pressure_barg: 0.5, design_temperature_degc: -196, material: SS inner / CS outer,
+     dimensions: {diameter: 7.4, height: 10.4, head: cone_roof, support: none, weight: 26, lift_weight: 0.5},
+     notes: "Flat-bottom, double wall, perlite insulation, 250 m3 working (2 d x 25 % GOX), ~275 m3 gross. Inner tank 6.4 m x 8.6 m shell = 277 m3; outer tank 7.4 m (0.5 m perlite annulus), 10.4 m overall with bottom insulation, top space and cone roof (D-017, D-028). O2 service. Field-erected plate by plate, never lifted whole: its heaviest crane lift is a roof fitting (relief / vacuum valve, manway cover), ~0.5 t (lift_weight, D-081 (10)). ASSUMED."}
+  - {tag: T-4102, type: Tank, service: LIN storage tank, sheet: P-04, design_pressure_barg: 0.5, design_temperature_degc: -196, material: SS inner / CS outer,
+     dimensions: {diameter: 8.2, height: 12.6, head: cone_roof, support: none, weight: 35, lift_weight: 0.5},
+     notes: "Flat-bottom, double wall, perlite insulation, 400 m3 working (372 m3 net for 2 d x 50 % GAN), ~440 m3 gross with heel and ullage (D-017). Inner tank 7.2 m x 10.8 m shell = 440 m3; outer tank 8.2 m (0.5 m perlite annulus), 12.6 m overall (D-028). Fill nozzle N6 from LIN-4004. Field-erected plate by plate, never lifted whole: its heaviest crane lift is a roof fitting (relief / vacuum valve, manway cover), ~0.5 t (lift_weight, D-081 (10)). ASSUMED."}
+  - {tag: P-4101A, type: CentrifugalPump, service: LOX backup pump, sheet: P-04, design_pressure_barg: 40, design_temperature_degc: -196, material: SS / bronze,
+     dimensions: {length: 1.6, width: 0.9, height: 1.4, support: base_plate, weight: 2, variant: cryogenic},
+     notes: "5.2 t/h to the 31 bara GOX header, 33.0 bara rated discharge with the vaporizer and PV-4111 drops (D-060 (5)), cold standby, O2 service, no oil in wetted parts (D-012). ASSUMED."}
+  - {tag: P-4101B, type: CentrifugalPump, service: LOX backup pump (spare), sheet: P-04, design_pressure_barg: 40, design_temperature_degc: -196, material: SS / bronze,
+     dimensions: {length: 1.6, width: 0.9, height: 1.4, support: base_plate, weight: 2, variant: cryogenic},
+     notes: "As P-4101A. ASSUMED."}
+  - {tag: P-4102A, type: CentrifugalPump, service: LIN backup pump, sheet: P-04, design_pressure_barg: 15, design_temperature_degc: -196, material: SS,
+     dimensions: {length: 1.6, width: 0.9, height: 1.4, support: base_plate, weight: 2, variant: cryogenic},
+     notes: "6.3 t/h to the 9 bara GAN header, 11.5 bara rated discharge with the vaporizer and PV-4112 drops (D-060 (5)), cold standby. ASSUMED."}
+  - {tag: P-4102B, type: CentrifugalPump, service: LIN backup pump (spare), sheet: P-04, design_pressure_barg: 15, design_temperature_degc: -196, material: SS,
+     dimensions: {length: 1.6, width: 0.9, height: 1.4, support: base_plate, weight: 2, variant: cryogenic},
+     notes: "As P-4102A. ASSUMED."}
+  - {tag: E-4105A, type: HeatExchanger, service: LOX ambient-air vaporizer A, sheet: P-04, design_pressure_barg: 40, design_temperature_degc: -196, material: Aluminium finned tubes / SS headers,
+     dimensions: {length: 3, width: 3, height: 8, weight: 6},
+     notes: "3,650 Nm3/h each (A/B switch for defrost), outlet low-temperature trip TSLL-4113. O2 service. ASSUMED."}
+  - {tag: E-4105B, type: HeatExchanger, service: LOX ambient-air vaporizer B, sheet: P-04, design_pressure_barg: 40, design_temperature_degc: -196, material: Aluminium finned tubes / SS headers,
+     dimensions: {length: 3, width: 3, height: 8, weight: 6},
+     notes: "As E-4105A. ASSUMED."}
+  - {tag: E-4106A, type: HeatExchanger, service: LIN ambient-air vaporizer A, sheet: P-04, design_pressure_barg: 15, design_temperature_degc: -196, material: Aluminium finned tubes,
+     dimensions: {length: 3.5, width: 3.5, height: 9, weight: 7},
+     notes: "5,000 Nm3/h each (A/B switch for defrost), outlet trip TSLL-4114. ASSUMED."}
+  - {tag: E-4106B, type: HeatExchanger, service: LIN ambient-air vaporizer B, sheet: P-04, design_pressure_barg: 15, design_temperature_degc: -196, material: Aluminium finned tubes,
+     dimensions: {length: 3.5, width: 3.5, height: 9, weight: 7},
+     notes: "As E-4106A. ASSUMED."}

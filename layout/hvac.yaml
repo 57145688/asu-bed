@@ -1,0 +1,47 @@
+# Ventilation of the clad buildings. Schema: `cheme schema hvac`. Skill hvac-ducts.
+# Every air change, capacity and size ASSUMED (DESIGN.md D-037) until the HVAC engineer's heat
+# load calculation replaces it; duct sizes come from cheme-as-code's velocity table (ASSUMED).
+units:
+  - id: AHU-1
+    title: "MAC house supply and extract unit"
+    building: B1
+    position: [56.0, 24.2]
+    rotation_deg: 180
+    size: [12.0, 3.0, 3.0]
+    capacity_m3h: 50000
+    intake: LV1
+    exhaust: LV2
+    notes: "Along the south wall between the roller door S1 and the personnel door S2, south of the K-1101 base; outdoor air port at its east end towards LV1, exhaust up through LV2 above it (ASSUMED size)"
+  - id: AHU-2
+    title: "Substation and control building air handling unit (filtered, overpressure)"
+    building: B2
+    position: [35.8, 51.2]
+    rotation_deg: 180
+    size: [4.0, 1.6, 2.2]
+    capacity_m3h: 10000
+    intake: LV1
+    exhaust: LV2
+    notes: "South-east corner of B2 in the MCC room; outdoor air from LV1 at the south end of the east wall beside it, exhaust through LV2 at the east end of the north wall, none in the south fire wall facing B1 (ASSUMED size, D-038 (6))"
+rooms:
+  - id: MAC-HALL
+    title: "MAC compressor hall"
+    building: B1
+    air_changes_per_h: 4
+    extract_fraction: 0.9
+    unit: AHU-1
+    duct_elevation_m: 9.3
+    # terminals along the walls, in duct order, so the mains follow the walls (within 1.2 m of
+    # them) outside the overhead crane's hook path over the hall (review3#7, D-039 (9))
+    supply: [[46.0, 23.2], [40.0, 23.2], [37.2, 28.0], [37.2, 35.0], [37.2, 42.0], [40.0, 46.8], [46.0, 46.8], [52.0, 46.8], [58.0, 46.8], [64.0, 46.8], [70.0, 46.8]]
+    extract: [[64.0, 23.2], [70.0, 23.2], [70.8, 28.0], [70.8, 35.0], [70.8, 42.0]]
+    basis: "Heat to the room air ~150 kW (gearbox, casings, uninsulated warm piping; the 9 MW motor air-water cooled, TEWAC, D-070) at a 10 K rise needs ~45,000 m3/h = 4 air changes of the 11,232 m3 hall; slight overpressure keeps dust out (ASSUMED, D-037)"
+  - id: B2-ROOMS
+    title: "Control room, switchgear and MCC room"
+    building: B2
+    air_changes_per_h: 10
+    extract_fraction: 0.8
+    unit: AHU-2
+    basis: "Switchgear, MCC, VSD and DCS / SIS cabinets ~30 kW and the occupied control room; 9,000 m3/h with 20 % kept as overpressure against the plant air (ASSUMED, D-037); the control room's own air conditioning is detail engineering"
+notes: >-
+  Supply air is outdoor air (no recirculation, no cooling coil modelled). The control room's air
+  conditioning, fire dampers and gas-tight intakes are detail engineering (D-037).

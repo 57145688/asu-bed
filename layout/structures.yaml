@@ -1,0 +1,533 @@
+# Steel structures and walls. Schema: `cheme schema structures`. Coordinates m, site frame;
+# levels, extents, ladders in the frame's own coordinates from its origin (south-west corner).
+# All sizes ASSUMED at basic engineering (structural design in detail engineering); member
+# sections are cheme-as-code's defaults by span. Basis in DESIGN.md D-026 and D-030.
+structures:
+  - id: CB-1
+    title: "Cold box: steel frame with casing around C-3101/C-3102, E-3101 and E-3102"
+    origin: [126, 38]
+    spans_x: [6, 5, 4]          # west bay: column stack; middle bay: E-3101; east bay: E-3102, ladders
+    spans_y: [9]
+    levels:
+      # access platforms cantilevered OUTSIDE the north casing face (wall 0.2 m, frame y 9.0 ..
+      # 9.2), 1.5 m wide, where the lines, valves and instruments leave the casing; nobody
+      # stands inside the perlite-filled, purged casing (D-038 (1), review4#1)
+      - {id: P10, title: "Access platform 10 m outside the north casing face", elevation: 10, kind: platform, extent: [0, 9.2, 15, 10.7]}
+      # E-3102 support deck inside the casing: steel only, no walking level (accepted, D-038 (1))
+      - {id: E20, title: "E-3102 support deck inside the casing (no access in operation)", elevation: 20, kind: platform, extent: [11, 2, 15, 7.2]}
+      - {id: P20, title: "Access platform 20 m outside the north casing face", elevation: 20, kind: platform, extent: [0, 9.2, 15, 10.7]}
+      - {id: P30, title: "Access platform 30 m outside the north casing face", elevation: 30, kind: platform, extent: [0, 9.2, 15, 10.7]}
+      - {id: P40, title: "Access platform 40 m outside the north casing face", elevation: 40, kind: platform, extent: [0, 9.2, 15, 10.7]}
+      - {id: RF, title: "Roof walkway on the casing roof (D-026: ~50 m columns + ~3 m above)", elevation: 53, kind: platform, extent: [0, 7.2, 15, 9]}
+      # relief valve platform south of the walkway, off the way to the ladders (D-033 (1))
+      - {id: RV, title: "Relief valve platform PSV-3114 / PSV-3116 on the casing roof, joins RF", elevation: 53, kind: platform, extent: [0.5, 3.5, 6.5, 7.2]}
+      # access strip from the east end of RF along the east roof edge to the casing breather
+      # PSV-3123 at the south-east corner (frame [14, 1]): inspection, test and replacement of
+      # the breather, entered only under the purge isolation and permit of D-031 (no N2
+      # outflow at the breather), with a personal O2 monitor; it ends 0.6 m from the breather
+      # inside its 5 m zone Z-N2-CASING by necessity, and is no way down (D-044 (6),
+      # review6#9)
+      - {id: RB, title: "Breather access strip on the casing roof, joins RF (entered under purge isolation only)", elevation: 53, kind: platform, extent: [13.8, 1.6, 15, 7.2]}
+      - {id: RF-out, title: "Landing outside the casing at 53 m (north side, joins RF, RV)", elevation: 53, kind: platform, extent: [0, 9.2, 15, 10.7]}
+    # east and south faces braced; west and north faces carry the pipe penetrations and rely on
+    # the stiffened casing panels (ASSUMED, structural design to confirm)
+    bracing: {east: x, south: x, west: none, north: none}
+    # stair tower outside the north platforms (east end, x 134.7 .. 140.5), standing out
+    # 1.7 m from the casing side (the wall 0.2 m plus the platform 1.5 m), so its flights rise
+    # beside the platforms, not on them: the platform in front of the hatch H1 and the walk
+    # from one flight to the next stay clear (D-039 (1), review5#3, #7); originally pinned
+    # from the build's proposals: from grade to every platform and to the roof landing
+    # RF-out, which joins the roof walkway RF over the casing wall top; the floors at 20 m and
+    # above are entered for valves, analysers and the relief valves, with tools, and the
+    # oxygen-deficient roof needs a quick way down (D-033 (6), D-038 (1))
+    stairs:
+      - {id: ST1, from: grade, to: P10, side: north, offset: 0.5, width: 0.9, out: 1.7}
+      - {id: ST2, from: P10, to: P20, side: north, offset: 0.5, width: 0.9, out: 1.7}
+      - {id: ST3, from: P20, to: P30, side: north, offset: 0.5, width: 0.9, out: 1.7}
+      - {id: ST4, from: P30, to: P40, side: north, offset: 0.5, width: 0.9, out: 1.7}
+      - {id: ST5, from: P40, to: RF-out, side: north, offset: 0.5, width: 0.9, out: 1.7}
+    # caged ladders at the west end of the north platforms, 13 m from the stair: the second way
+    # down from every platform and the roof, offset 1 m between flights (D-030 (1), D-038 (1))
+    ladders:
+      - {id: LD0, from: grade, to: P10, at: [0.5, 10.2], facing: north}
+      - {id: LD1, from: P10, to: P20, at: [1.5, 10.2], facing: north}
+      - {id: LD2, from: P20, to: P30, at: [0.5, 10.2], facing: north}
+      - {id: LD3, from: P30, to: P40, at: [1.5, 10.2], facing: north}
+      - {id: LD4, from: P40, to: RF-out, at: [0.5, 10.2], facing: north}
+    enclosure:
+      walls: all
+      height: 53
+      material: casing
+      openings:
+        # access hatch for the JT valves LV-3101 / FV-3106 (extended bonnets, actuators at the
+        # hatch), 0.4 m inside the north wall above P20 (D-038 (3), review4#3)
+        - {id: H1, side: north, offset: 2.1, width: 1.2, height: 1.2, sill: 20.3, kind: hatch}
+        # the casing penetration schedule: one sleeve per line leaving the casing, from the
+        # build's penetrations (cheme layout pin CB-1/<line>), sizes the pipe plus
+        # clearance (review3#6, D-039 (9)); the sleeve and bellows details are the cold box
+        # vendor's
+        - {id: AIR-3002, side: south, offset: 10, width: 0.4, height: 0.4, sill: 8.8, kind: opening}
+        - {id: AIR-3003, side: south, offset: 8.35, width: 0.3, height: 0.3, sill: 1.35, kind: opening}
+        - {id: AIR-3004, side: south, offset: 2.25, width: 0.5, height: 0.5, sill: 1.25, kind: opening}
+        - {id: GAN-4001, side: north, offset: 7.7, width: 0.4, height: 0.4, sill: 12.2, kind: opening}
+        - {id: GOX-4001, side: north, offset: 6.55, width: 0.7, height: 0.7, sill: 12.3, kind: opening}
+        - {id: LIN-3001, side: east, offset: 7.65, width: 0.3, height: 0.25, sill: 5.3, kind: opening}
+        - {id: LOX-3001, side: north, offset: 11.85, width: 0.3, height: 0.3, sill: 12.15, kind: opening}
+        - {id: UN-3001, side: north, offset: 9.8, width: 0.2, height: 0.25, sill: 8.9, kind: opening}
+        - {id: WN-3002, side: north, offset: 6.45, width: 1.1, height: 1.05, sill: 5, kind: opening}
+        - {id: AIR-2002, side: north, offset: 7.65, width: 0.85, height: 0.85, sill: 7.95, kind: opening}  # DN700 sleeve (D-080 (1), review12#2; was 0.65 m for DN500)
+    notes: >-
+      Casing 15 x 9 m, 53 m high (C-3101 20 m + C-3102 30 m stacked and the top nozzle piping
+      inside, D-026), perlite filled and N2 purged (PV-3113, breather PSV-3123 / VNT-3004). The
+      relief valves PSV-3114 / PSV-3116 stand on the relief valve platform RV south of the roof
+      walkway, their tailpipes rising above the walkway headroom plus their zone radius
+      (piping/routing.yaml vents, D-033). Nobody stands inside the casing: the access
+      platforms P10..P40 are cantilevered outside the north face, where the lines leave the
+      casing, with a stacked stair ST1..ST5 at their east end up to the roof landing RF-out
+      and caged ladders LD0..LD4 at their west end (two ways down from every platform and the
+      roof; O2-deficient vents near the roof, D-011, D-038 (1)). Toppling radius 53 m, the casing height, kept
+      clear of B1 (site-plan separations, D-033 (2)).
+  # D-091 (3) (layout#15): ASSUMED envelope allowance for the cold box casing extension around the
+  # expander end KT-3101 of the compander. No vendor drawing will come, so it is sized from the
+  # usual arrangement: the expander's cold end (wheel, nozzle ring, inlet volute, exhaust
+  # diffuser and the cold inlet and exhaust connections) sits in a perlite-filled casing bolted to
+  # the cold box, and the bearing housing passes through its wall towards the warm booster end.
+  # Here: the whole 3 x 3 x 3 m expander end plus 0.5 m perlite allowance on its free west and
+  # south sides, as high as the expander end (3 m), with the inlet AIR-3003 entering through its
+  # roof at N1 (a taller casing put its walls into the lift lanes of KT-3101 and K-3101 from
+  # Z-PAD-A3S); the east wall stands in the 0.1 m gap to the booster K-3101 (the bearing
+  # housing / shaft wall), with the AIR-3003 sleeve where the inlet run from XV-3117 comes in.
+  # Open to the north, where it joins the CB-1 south casing wall (y 37.8). No levels, so no
+  # steel of its own: the walls are the casing panels. The roof panels are removable for the
+  # maintenance lift (ASSUMED)
+  - id: CB-1X
+    title: "Cold box casing extension around the expander end KT-3101 (ASSUMED envelope)"
+    origin: [126.6, 33.8]
+    spans_x: [3.4]
+    spans_y: [4.0]
+    levels: []
+    enclosure:
+      walls: [west, south, east]
+      height: 3.0
+      material: casing
+      thickness: 0.1
+      openings: [{id: AIR-3003, side: east, offset: 3.6, width: 0.3, height: 0.3, sill: 1.35, kind: opening}]
+    notes: >-
+      ASSUMED envelope allowance (D-091 (3)): 3.4 x 4.0 m in plan, 3 m high, against the CB-1
+      south wall; perlite filled and purged with the cold box (D-031). It replaces the vendor's
+      casing extension drawing, which will not come.
+  - id: FW-TR
+    title: "Fire wall between the transformers TR-1 and TR-2 in the yard west of B2"
+    origin: [13, 56.2]
+    spans_x: [6]
+    spans_y: [0.6]
+    levels: []
+    enclosure:
+      walls: [north]
+      height: 5
+      material: fire_wall
+      thickness: 0.3
+    notes: >-
+      Reinforced concrete wall 0.3 m (REI 120), 5 m high (above the TR-1 conservator), from the
+      B2 west wall to the R4 side of the bays, between the TR-1 and TR-2 oil bunds (IEC 61936-1
+      practice, ASSUMED; D-038 (7)).
+  - id: FW-4101
+    title: "GOX compressor fire / blast wall around K-4101, open to the east"
+    origin: [160.5, 24]
+    spans_x: [12]
+    spans_y: [10]
+    levels: []
+    enclosure:
+      walls: [west, south, north]
+      height: 7
+      material: fire_wall
+      thickness: 0.3
+      # fire-rated wall sleeves for the interstage loop to the intercooler package E-4101
+      # north of the wall, from the build's penetrations (D-033 (4)); the GOX suction GOX-4001
+      # comes over the wall onto the top nozzle and needs none
+      openings:
+        - {id: SL1, side: north, offset: 8.25, width: 0.5, height: 0.45, sill: 3.45, kind: opening}  # GOX-4005 to E-4101
+        - {id: SL2, side: north, offset: 4.35, width: 0.45, height: 0.45, sill: 3.45, kind: opening} # GOX-4005 back from E-4101
+    notes: >-
+      Reinforced concrete wall 0.3 m, 7 m high (K-4101 5 m), on three sides; the open east side
+      faces away from the cold box, the rack and the road R1 (EIGA Doc 27 practice for oxygen
+      compressors, ASSUMED; D-012, D-026).
+  # ---- valve access platforms (D-047): from the build's proposals (VP-n), adapted so that
+  # nothing stands in them: a floor at most 1.8 m below the handwheel and within 0.6 m of it in
+  # plan; below 6 m a caged ladder, from 6 m a stair whose top landing meets the platform; the
+  # stair side chosen so no pipe runs through the flights or less than 2.1 m over a landing;
+  # the platform shifted or cut so no pipe passes through a column. Every size ASSUMED (the
+  # structural and piping detail design confirms them). The routes of the valves' lines are
+  # pinned in piping/routing.yaml, so the valves stay where the platforms reach them.
+  # waste N2 vent valve PV-3110B on WN-3003 at the cold box: floor 5.6 m (handwheel 7.4 m),
+  # extended west so its ladder stands clear of the CW-3001 riser; the caged ladder stands
+  # outside the south edge (0.2 m off it) with a through exit and a self-closing gate in the
+  # handrail (ISO 14122-4, ASSUMED), not through the floor (review7#9, D-051 (8))
+  # VP-1 0.35 m west (D-071): clear of the DN900 WN-3003 at x 133.5
+  - {id: VP-1, title: "valve access platform for PV-3110B", origin: [130.65, 60.3], spans_x: [1.95], spans_y: [2.0], levels: [{id: P1, elevation: 5.6, kind: platform, use: occasional}], ladders: [{id: ladder-to-P1, from: grade, to: P1, at: [0.4, -0.2], facing: south}], serves: [P-03/PV3110B]}
+  # GOX vent valve PV-4101B on the PR1 south edge: cut to 1.6 m so its columns stay south of the
+  # UN-3001 lane
+  - {id: VP-2, title: "valve access platform for PV-4101B", origin: [155.42, 63.77], spans_x: [1.2], spans_y: [1.6], levels: [{id: P1, elevation: 10.16, kind: platform, use: occasional}], stairs: [{id: stair-to-P1, from: grade, to: P1, side: east, offset: -4.236}], serves: [P-04/PV4101B]}
+  # GOX compressor suction ESD valve XV-4117 on the drop to K-4101; the stair 1.2 m further
+  # south than proposed, so its base landing stands 0.9 m clear of the K-4102 package (review8#6,
+  # D-055 (3); 0.8 m walkway ASSUMED)
+  - {id: VP-3, title: "valve access platform for XV-4117", origin: [160.45, 46.95], spans_x: [1.2], spans_y: [2.0], levels: [{id: P1, elevation: 9.95, kind: platform, use: occasional}], stairs: [{id: stair-to-P1, from: grade, to: P1, side: west, offset: -3.653}], serves: [P-04/XV4117]}
+  # GOX product riser: the GOX vent ESD valve XV-4116 and the bypass valve HV-4129 share one
+  # 7.2 m walkway west of the GOX-4002 run at 8.65 m (two proposals, one stair)
+  - {id: VP-4, title: "valve access platform for XV-4116 and HV-4129", origin: [178.92, 52.01], spans_x: [1.2], spans_y: [7.19], levels: [{id: P1, elevation: 8.65, kind: platform, use: occasional}], stairs: [{id: stair-to-P1, from: grade, to: P1, side: west, offset: 0}], serves: [P-04/XV4116, P-04/HV4129]}
+  # GOX battery limit: the DBB bypass valve HV-4130
+  - {id: VP-5, title: "valve access platform for HV-4130", origin: [172.39, 62.34], spans_x: [2.0], spans_y: [1.2], levels: [{id: P1, elevation: 8.35, kind: platform, use: occasional}], stairs: [{id: stair-to-P1, from: grade, to: P1, side: east, offset: -4.217}], serves: [P-04/HV4130]}
+  # GAN battery limit: the ESD valve XV-4134 and the bleed valve XV-4135 on the risers, floor
+  # 5.9 m (handwheels 7.4 / 7.5 m) with a caged ladder (was proposed at 6.33 m with a stair),
+  # outside the south edge with a through exit and a self-closing gate (ISO 14122-4, ASSUMED),
+  # so its cage takes none of the 1.26 x 1.5 m floor (review7#9, D-051 (8))
+  - {id: VP-6, title: "valve access platform for XV-4134, XV-4135", origin: [170.22, 61.15], spans_x: [1.26], spans_y: [1.5], levels: [{id: P1, elevation: 5.9, kind: platform, use: occasional}], ladders: [{id: ladder-to-P1, from: grade, to: P1, at: [0.4, -0.2], facing: south}], serves: [P-04/XV4134, P-04/XV4135]}
+  # GOX compressor anti-surge valve UV-4103 on the recycle GOX-4003
+  - {id: VP-7, title: "valve access platform for UV-4103", origin: [182.37, 35.12], spans_x: [2.0], spans_y: [1.2], levels: [{id: P1, elevation: 9.51, kind: platform, use: occasional}], stairs: [{id: stair-to-P1, from: grade, to: P1, side: east, offset: -4.678}], serves: [P-04/UV4103]}
+  # PR3 backup GOX / GAN pressure valves PV-4111 / PV-4112, west of the rack (shifted 0.3 m west
+  # and 0.6 m south of the proposals, clear of the VNT-4003 lane); floor 8.6 m, above the PR3
+  # 8.5 m edge stringers (D-048), the handwheels 0.5 m above the grating
+  # VP-8 (PV-4111) stood with its stair in the central road R2: PV-4111 now sits north of the
+  # road beside PV-4112 (its PSV-4127 tee moved to y 89.5), and VP-9, lengthened north to 4.5 m,
+  # serves both (review7#1, D-051 (2)); VP-8 is no longer used
+  - {id: VP-9, title: "valve access platform for PV-4111 and PV-4112", origin: [179.91, 84.54], spans_x: [1.2], spans_y: [4.5], levels: [{id: P1, elevation: 8.6, kind: platform, use: occasional}], stairs: [{id: stair-to-P1, from: grade, to: P1, side: west, offset: -4.316}], serves: [P-04/PV4111, P-04/PV4112]}
+  # D-084: TSA switching-valve access. The actuated switching valves on the adsorber top piping
+  # (XV-2101A, XV-2111A, XV-2103A/B, XV-2102A/B) get their override, air set and positioner on a
+  # pedestal on one of two small platforms at 5.9 m (below 6 m, so a caged ladder is the way down,
+  # as VP-6; remote_operator in piping/routing.yaml, runs 2-5 m): VP-TSA-B in the strip between the sieve change-out lane Z-SIEVE (y 34 .. 38) and
+  # V-2101B, clear of RG-2002 (x 92), RG-2003 S8 (x 100) and the lane; VP-TSA-E east of V-2101A
+  # between its head and the AIR-2001 run along x 105. Caged ladders, platforms in occasional use
+  # (ASSUMED; D-047's free-standing frames over the vessels are not needed)
+  - {id: VP-TSA-B, title: "TSA valve platform between Z-SIEVE and V-2101B", origin: [92.8, 38.15], spans_x: [5.8], spans_y: [1.4], levels: [{id: P1, elevation: 5.9, kind: platform, use: occasional}], ladders: [{id: ladder-to-P1, from: grade, to: P1, at: [6.05, 0.7], facing: east}], serves: [P-02/XV2101A, P-02/XV2111A, P-02/XV2103A, P-02/XV2103B, P-02/XV2102B]}
+  - {id: VP-TSA-E, title: "TSA valve platform east of V-2101A", origin: [104.3, 28.0], spans_x: [1.5], spans_y: [2.5], levels: [{id: P1, elevation: 5.9, kind: platform, use: occasional}], ladders: [{id: ladder-to-P1, from: grade, to: P1, at: [1.75, 1.25], facing: east}], serves: [P-02/XV2102A]}
+pipe_supports:
+  - {id: P-01/Line_AIR1006_S1/post-1, kind: t_post, at: [54.06, 35.5], top: 3.4, from: grade, width: 1.0, rotation_deg: 90.0, serves: [P-01/Line_AIR1006_S1], notes: "proposal shifted +0.5 m along the pipe, clear of the pipe or item below it (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-02/Line_AIR1004_S1/post-1, kind: t_post, at: [89.0, 56.0], top: 5.19, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-02/Line_AIR1004_S1], notes: "top 5.19 m under the DN700 run (D-080 (1), was 5.29); proposal shifted +0.5 m along the pipe, clear of the pipe or item below it, then 0.6 m north, clear of RG-2001 S2 (was 0.05 m; review8#7, D-055 (4)) (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-02/Line_RG2003_S8/post-1, kind: t_post, at: [104.2, 38.845], top: 5.9, from: grade, width: 1.0, rotation_deg: 90.0, serves: [P-02/Line_RG2003_S8], notes: "proposal shifted +0.5 m along the pipe, clear of the pipe or item below it, then 0.4 m west, clear of AIR-2001 S1 (was 0.04 m; review8#7, D-055 (4)) (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-03/Line_AIR3005_S2/post-1, kind: t_post, at: [135.5, 33.2], top: 4.264, from: grade, width: 1.0, rotation_deg: 90.0, serves: [P-03/Line_AIR3005_S2], notes: "proposal moved 2.1 m east along the pipe, out of the K-3101 lift lane from Z-PAD-A3S (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-03/Line_LOX3001_S1/post-2, kind: t_post, at: [129.0, 47.191], top: 12.126, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-03/Line_LOX3001_S1], notes: "proposal shifted -0.5 m along the pipe, clear of the pipe or item below it (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-04/Line_CW4001_S1/post-3, kind: t_post, at: [181.09, 50.798], top: 3.786, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-04/Line_CW4001_S1], notes: "proposal shifted -0.5 m along the pipe, clear of the pipe or item below it (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-04/Line_CWR4002_S1/post-1, kind: t_post, at: [168.933, 62.587], top: 3.786, from: grade, width: 0.5, rotation_deg: 0.0, serves: [P-04/Line_CWR4002_S1], notes: "proposal shifted +1.5 m along the pipe, clear of the pipe or item below it; crossbar 0.5 m (was 1 m), its east end 0.12 m clear of the GAN-4004 S1 post-1 column it ran into (review10#2, D-065 (5)) (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-04/Line_GAN4004_S1/post-1, kind: t_post, at: [169.4, 62.783], top: 9.814, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-04/Line_GAN4004_S1], notes: "proposal shifted +1.5 m along the pipe, clear of the pipe or item below it (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-04/Line_GOX4001_S2/post-1, kind: t_post, at: [163.0, 56.875], top: 10.208, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-04/Line_GOX4001_S2], notes: "proposal shifted +0.5 m along the pipe, clear of the pipe or item below it (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-04/Line_GOX4001_S3/post-1, kind: t_post, at: [162.0, 35.5], top: 10.208, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-04/Line_GOX4001_S3], notes: "proposal shifted -1.5 m along the pipe, clear of the pipe or item below it, then 1.7 m south, out of the lift lane of the wider E-4101 package (D-055 (6)) (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-04/Line_GOX4002_S12/post-5, kind: t_post, at: [180.8, 66.8], top: 10.408, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-04/Line_GOX4002_S12], notes: "proposal shifted +2 m along the pipe, clear of the pipe or item below it; then 0.3 m north: its column stood 0.02 m into the CWR-4001 post-7 crossbar (D-062 (1)) (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-04/Line_GOX4002_S12/post-6, kind: t_post, at: [180.8, 63.7], top: 10.408, from: grade, width: 0.45, rotation_deg: 0, serves: [P-04/Line_GOX4002_S12], notes: "added between SP-19.9 and post-5 (spans 2.25 / 3.1 m): the only column places clear of VNT-4002, WN-3003 and the CWR-4001 crossbars there (D-062 (1)) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4002_S13/post-1, kind: t_post, at: [178.8, 60.678], top: 10.012, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-04/Line_GOX4002_S13], notes: "proposal shifted +0.5 m along the pipe, clear of the pipe or item below it (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-04/Line_LIN3001_S1/post-2, kind: t_post, at: [141.98, 69.6], top: 6.4, from: grade, width: 1.0, rotation_deg: 0.0, serves: [P-04/Line_LIN3001_S1], notes: "proposal shifted +0.5 m along the pipe, clear of the pipe or item below it; 0.2 m north, 0.2 m clear of the CWR-4002 lane at y 69.22 on the PR1 5 m tier (D-074, review11#12) (ASSUMED: check the support with the stress engineer; D-049)"}
+  - {id: P-01/Line_AIR1002_S1/post-1, kind: t_post, at: [59.1, 30], top: 5.815, from: grade, width: 1, rotation_deg: 90, serves: [P-01/Line_AIR1002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_AIR1003_S1/post-1, kind: t_post, at: [65.7, 38.841], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_AIR1003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_AIR1003_S1/post-2, kind: t_post, at: [66.93, 31.3], top: 3.4, from: grade, width: 1, rotation_deg: 90, serves: [P-01/Line_AIR1003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_AIR1006_S2/post-1, kind: t_post, at: [58.259, 34.422], top: 3.4, from: grade, width: 1, rotation_deg: 90, serves: [P-01/Line_AIR1006_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHW1001_S1/post-1, kind: t_post, at: [51.984, 60], top: 1.885, from: grade, width: 1, rotation_deg: 90, serves: [P-01/Line_CHW1001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHW1001_S6/post-1, kind: t_post, at: [75.3, 59.363], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHW1001_S6], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHW1001_S6/post-2, kind: t_post, at: [75.3, 54.592], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHW1001_S6], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHW1001_S6/post-3, kind: t_post, at: [75.3, 49.821], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHW1001_S6], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1001_S1/post-1, kind: t_post, at: [64.044, 63.75], top: 3.681, from: grade, width: 0.7, rotation_deg: 0, serves: [P-01/Line_CW1001_S1], notes: "pinned proposal; crossbar 0.7 m, its end 0.14 m clear of CWR-1004 S1 (was 1 m, 0.06 m; review8#7, D-055 (4)) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1001_S6/post-1, kind: t_post, at: [65.096, 51.612], top: 2.529, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1001_S6], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1001_S6/post-2, kind: t_post, at: [67.393, 49.291], top: 2.529, from: grade, width: 1, rotation_deg: 90, serves: [P-01/Line_CW1001_S6], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1002_S1/post-1, kind: t_post, at: [40.62, 57.329], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1002_S1/post-2, kind: t_post, at: [40.62, 50.445], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1003_S1/post-1, kind: t_post, at: [57.821, 60.859], top: 2.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1004_S1/post-1, kind: t_post, at: [58.53, 60.63], top: 3.576, from: grade, width: 1.4, rotation_deg: 0, serves: [P-01/Line_CW1004_S1, P-01/Line_CWR1003_S1], notes: "common support of CW-1004 S1 (x 58.12) and CWR-1003 S1 (x 58.94), both at 3.84 m: replaces this post (58.12, 60.617) and CWR-1003 S1 post-3 (58.94, 60.639), whose 1 m crossbars ran through each other; column between the pipes 0.15 m clear of each, crossbar 1.4 m (review10#2, D-065 (5)) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1004_S1/post-2, kind: t_post, at: [58.12, 54.099], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1004_S1/post-3, kind: t_post, at: [58.12, 47.58], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1005_S1/post-1, kind: t_post, at: [62.792, 60.218], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1005_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1005_S1/post-2, kind: t_post, at: [62.792, 54.529], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1005_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1005_S1/post-3, kind: t_post, at: [62.792, 48.84], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1005_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CW1005_S1/post-4, kind: t_post, at: [62.792, 43.151], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CW1005_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1001_S1/post-1, kind: t_post, at: [69.263, 57.051], top: 3.627, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1001_S1/post-2, kind: t_post, at: [69.263, 62.103], top: 3.627, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1002_S1/post-1, kind: t_post, at: [43.725, 48.775], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1002_S1/post-2, kind: t_post, at: [43.725, 54.203], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1002_S1/post-3, kind: t_post, at: [43.725, 59.631], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1003_S1/post-1, kind: t_post, at: [58.94, 49.254], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1003_S1/post-2, kind: t_post, at: [58.94, 54.947], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1004_S1/post-1, kind: t_post, at: [64.698, 43.321], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1004_S1/post-2, kind: t_post, at: [64.698, 49.179], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CWR1004_S1/post-3, kind: t_post, at: [64.698, 55.038], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-02/Line_AIR2001_S1/post-1, kind: t_post, at: [105, 32.5], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-02/Line_AIR2001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-02/Line_AIR2001_S3/post-1, kind: t_post, at: [105, 50.389], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-02/Line_AIR2001_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-02/Line_AIR2001_S3/post-2, kind: t_post, at: [105, 58.777], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-02/Line_AIR2001_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-02/Line_RG2001_S2/post-1, kind: t_post, at: [90.084, 62.178], top: 5.29, from: grade, width: 1, rotation_deg: 0, serves: [P-02/Line_RG2001_S2], notes: "pinned proposal; top 0.1 m lower and 0.1 m south for the DN600 line (D-072) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-02/Line_RG2001_S3/post-1, kind: t_post, at: [88, 65.5], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-02/Line_RG2001_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-02/Line_RG2001_S3/post-2, kind: t_post, at: [88, 54.227], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-02/Line_RG2001_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-02/Line_RG2002_S3/post-1, kind: t_post, at: [92.0, 39.0], top: 6.9, from: grade, width: 1, rotation_deg: 0, serves: [P-02/Line_RG2002_S3], notes: "proposal moved 4.5 m north along the pipe, out of the sieve change-out area Z-SIEVE (y 34 .. 38; at y 33.5 it stood in RG-2003) (ASSUMED: check the support with the stress engineer; D-051 (4))"}
+  - {id: P-03/Line_AIR2002_S1/post-1, kind: t_post, at: [134.354, 56.415], top: 7.9, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_AIR2002_S1], notes: "pinned proposal; column 0.06 m west, 0.15 m clear of the DN600 RG-2001 riser (D-072) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_AIR3003_S1/post-1, kind: t_post, at: [134.5, 37.55], top: 1.316, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_AIR3003_S1], notes: "proposal moved to the bend east of K-3101 (its crossbar reached 0.35 m into the K-3101 package; west of it stands KT-3101 on the same skid): 6.0 m to the riser, within the DN 150 span (ASSUMED: check the support with the stress engineer; D-051 (4))"}
+  - {id: P-03/Line_AIR3005_S1/post-1, kind: t_post, at: [139.71, 48.2], top: 8.018, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_AIR3005_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_AIR3005_S1/post-2, kind: t_post, at: [142.6, 44.293], top: 8.018, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_AIR3005_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_AIR3005_S1/post-3, kind: t_post, at: [142.6, 37.497], top: 8.018, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_AIR3005_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-1, kind: t_post, at: [132.137, 63.1], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-2, kind: t_post, at: [132.137, 58.137], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-3, kind: t_post, at: [132.137, 53.175], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-4, kind: t_post, at: [131.288, 49.062], top: 3.732, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-5, kind: t_post, at: [127.787, 47.6], top: 3.732, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-6, kind: t_post, at: [125.5, 44.925], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-7, kind: t_post, at: [125.5, 39.962], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-8, kind: t_post, at: [127.584, 33.6], top: 2.316, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CW3001_S1/post-9, kind: t_post, at: [130.137, 32.668], top: 2.316, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CWR3001_S1/post-1, kind: t_post, at: [140.213, 32.143], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CWR3001_S1/post-2, kind: t_post, at: [140.745, 36.684], top: 3.732, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CWR3001_S1/post-3, kind: t_post, at: [142.55, 40.288], top: 3.732, from: grade, width: 1.2, rotation_deg: 0, serves: [P-03/Line_CWR3001_S1], notes: "column 0.34 m east of the pipe, its 1.2 m crossbar under it, so the escape route Z-ESC-CB1 keeps 1.25 m clear (ASSUMED: check the support with the stress engineer; D-051 (7))"}
+  - {id: P-03/Line_CWR3001_S1/post-4, kind: t_post, at: [142.55, 45.36], top: 3.732, from: grade, width: 1.2, rotation_deg: 0, serves: [P-03/Line_CWR3001_S1], notes: "column 0.34 m east of the pipe, its 1.2 m crossbar under it, so the escape route Z-ESC-CB1 keeps 1.25 m clear (ASSUMED: check the support with the stress engineer; D-051 (7))"}
+  - {id: P-03/Line_CWR3001_S1/post-5, kind: t_post, at: [142.55, 50.432], top: 3.732, from: grade, width: 1.2, rotation_deg: 0, serves: [P-03/Line_CWR3001_S1], notes: "column 0.34 m east of the pipe, its 1.2 m crossbar under it, so the escape route Z-ESC-CB1 keeps 1.25 m clear (ASSUMED: check the support with the stress engineer; D-051 (7))"}
+  - {id: P-03/Line_CWR3001_S1/post-6, kind: t_post, at: [142.213, 55.505], top: 3.732, from: grade, width: 0.5, rotation_deg: 0, serves: [P-03/Line_CWR3001_S1], notes: "pinned proposal; crossbar 0.5 m (was 1 m), its east end 0.14 m clear of the LIN-3001 S1 post-7 column it ran into (review10#2, D-065 (5)) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CWR3001_S1/post-7, kind: t_post, at: [142.213, 60.577], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CWR3001_S1/post-8, kind: t_post, at: [142.213, 65.649], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CWR3001_S1/post-9, kind: t_post, at: [139.285, 67.794], top: 3.732, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LOX3001_S2/post-1, kind: t_post, at: [128.933, 51.173], top: 9.848, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LOX3001_S2/post-2, kind: t_post, at: [128.933, 53.163], top: 9.848, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LOX3001_S2/post-3, kind: t_post, at: [128.933, 55.153], top: 9.848, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LOX3001_S2/post-4, kind: t_post, at: [128.933, 57.144], top: 9.848, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LOX3001_S2/post-5, kind: t_post, at: [128.933, 59.134], top: 9.848, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LOX3001_S2/post-6, kind: t_post, at: [128.933, 61.124], top: 9.848, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LOX3001_S2/post-7, kind: t_post, at: [128.933, 63.114], top: 9.848, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  # LOX-3002 S1 passes north of the cold box ladders LD0 (x 126.5) and LD1 (x 127.5): post-1
+  # east of LD1 (its crossbar entered the LD1 cage over P10), post-2 west of the LD1 exit,
+  # 0.28 m outside the LD0 cage, which ends at P10; spans 2.1 / 2.0 / 1.8 m (review7#3, D-051 (6))
+  - {id: P-03/Line_LOX3002_S1/post-1, kind: t_post, at: [128.4, 49.25], top: 12.183, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_LOX3002_S1], notes: "proposal moved east of the LD1 ladder (ASSUMED: check the support with the stress engineer; D-051 (6))"}
+  - {id: P-03/Line_LOX3002_S1/post-2, kind: t_post, at: [126.3, 49.25], top: 12.183, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_LOX3002_S1], notes: "proposal moved 0.55 m east, 2.1 m from post-1 (ASSUMED: check the support with the stress engineer; D-051 (6))"}
+  - {id: P-03/Line_LOX3002_S1/post-3, kind: t_post, at: [124.3, 49.25], top: 12.183, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_LOX3002_S1], notes: "proposal moved 0.18 m east (ASSUMED: check the support with the stress engineer; D-051 (6))"}
+  - {id: P-03/Line_UN3001_S1/post-1, kind: t_post, at: [143.1, 65.809], top: 8.9, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_UN3001_S1], notes: "pinned proposal, moved 0.62 m east out of the gap between CWR-3001 S1 and LIN-3001 S1 (0.08 / 0.05 m; review8#7, D-055 (4)) (ASSUMED: check the support with the stress engineer)"}
+  # UN-3001 S1 along x 131.1 at 10.4 m: four posts from grade (the stub on the VP-1 floor
+  # removed, and the VP-1 ladder kept clear), spans 3.2 .. 3.7 m (review7#8, D-051 (8))
+  - {id: P-03/Line_UN3001_S1/post-2, kind: t_post, at: [131.1, 62.6], top: 10.26, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_UN3001_S1], notes: "post from grade north of VP-1 instead of the stub on its floor (ASSUMED: check the support with the stress engineer; D-051 (8))"}
+  - {id: P-03/Line_UN3001_S1/post-3, kind: t_post, at: [131.1, 58.9], top: 10.26, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_UN3001_S1], notes: "proposal moved 1.0 m north, south of the VP-1 ladder (ASSUMED: check the support with the stress engineer; D-051 (8))"}
+  - {id: P-03/Line_UN3001_S1/post-4, kind: t_post, at: [131.1, 56.3], top: 10.26, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_UN3001_S1], notes: "proposal moved 2.35 m north (ASSUMED: check the support with the stress engineer; D-051 (8))"}
+  - {id: P-03/Line_UN3001_S1/post-6, kind: t_post, at: [131.1, 53.2], top: 10.26, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_UN3001_S1], notes: "added: 3.1 m to post-4, 3.2 m to the bend at y 50 (ASSUMED: check the support with the stress engineer; D-051 (8))"}
+  - {id: P-03/Line_UN3001_S1/post-5, kind: t_post, at: [131.1, 47.3], top: 8.9, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_UN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/post-1, kind: t_post, at: [177.59, 64.191], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CW4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/post-2, kind: t_post, at: [177.814, 60.303], top: 3.786, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_CW4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/post-6, kind: t_post, at: [181.09, 47.13], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CW4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/post-7, kind: t_post, at: [181.09, 43.017], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CW4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/post-8, kind: t_post, at: [181.09, 38.905], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CW4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4002_S1/post-1, kind: t_post, at: [167.298, 64.564], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CW4002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4002_S1/post-2, kind: t_post, at: [167.298, 60.611], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CW4002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4001_S1/post-1, kind: t_post, at: [179.675, 42.007], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CWR4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4001_S1/post-2, kind: t_post, at: [179.675, 45.257], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CWR4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4001_S1/post-3, kind: t_post, at: [179.675, 48.507], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CWR4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4001_S1/post-4, kind: t_post, at: [181.175, 54.274], top: 3.286, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CWR4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4001_S1/post-5, kind: t_post, at: [181.175, 58.291], top: 3.286, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CWR4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4001_S1/post-6, kind: t_post, at: [181.175, 62.308], top: 3.286, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CWR4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4001_S1/post-7, kind: t_post, at: [181.175, 66.324], top: 3.286, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CWR4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4002_S1/post-2, kind: t_post, at: [168.933, 65.017], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CWR4002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GAN4001_S1/post-1, kind: t_post, at: [132.823, 58.979], top: 9.974, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GAN4001_S1], notes: "pinned proposal, 0.1 m west with its run, clear of WN-3002 (review8#7, D-055 (4)) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GAN4001_S3/post-1, kind: t_post, at: [150.454, 59.19], top: 9.974, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GAN4001_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GAN4002_S1/post-1, kind: t_post, at: [163.969, 58.837], top: 3.4, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_GAN4002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GAN4003_S1/post-1, kind: t_post, at: [167.607, 121], top: 4.343, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_GAN4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GAN4003_S3/post-1, kind: t_post, at: [172.695, 117.0], top: 9.314, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_GAN4003_S3], notes: "pinned proposal after the run moved to y 117, out of Z-LAYDOWN-A5N and Z-LAD-PR3 (ASSUMED: check the support with the stress engineer; D-051 (4))"}
+  - {id: P-04/Line_GAN4003_S3/post-2, kind: t_post, at: [177.134, 117.0], top: 9.314, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_GAN4003_S3], notes: "pinned proposal after the run moved to y 117, out of Z-LAYDOWN-A5N and Z-LAD-PR3 (ASSUMED: check the support with the stress engineer; D-051 (4))"}
+  - {id: P-04/Line_GOX4002_S1/post-1, kind: t_post, at: [173.5, 34.869], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4002_S1], notes: "pinned proposal for the run west of crane pad Z-PAD-A4 (it stood on the pad) (ASSUMED: check the support with the stress engineer; D-051 (5))"}
+  - {id: P-04/Line_GOX4002_S13/post-2, kind: t_post, at: [178.8, 62.493], top: 10.012, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4002_S13], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4002_S3/post-1, kind: t_post, at: [180.827, 40], top: 9.919, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_GOX4002_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4002_S4/post-1, kind: t_post, at: [180.3, 48.026], top: 9.919, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4003_S1/post-1, kind: t_post, at: [183.6, 40.409], top: 9.868, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4003_S1/post-2, kind: t_post, at: [183.6, 45.818], top: 9.868, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4003_S1/post-3, kind: t_post, at: [183.6, 51.227], top: 9.868, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4003_S1/post-4, kind: t_post, at: [183.6, 56.637], top: 9.868, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4003_S1/post-5, kind: t_post, at: [183.6, 62.046], top: 9.868, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4003_S1/post-6, kind: t_post, at: [164, 61.84], top: 9.868, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4003_S1/post-7, kind: t_post, at: [164, 56.709], top: 9.868, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4003_S1/post-8, kind: t_post, at: [164, 51.577], top: 9.868, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4004_S1/post-1, kind: t_post, at: [167.8, 99], top: 9.314, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_GOX4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4004_S3/post-1, kind: t_post, at: [176.829, 99], top: 9.314, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_GOX4004_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/post-1, kind: t_post, at: [139.6, 104.967], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/post-2, kind: t_post, at: [139.6, 106.933], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/post-3, kind: t_post, at: [139.6, 108.9], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/post-4, kind: t_post, at: [139.6, 110.867], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/post-5, kind: t_post, at: [139.6, 112.833], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/post-6, kind: t_post, at: [141.68, 114.8], top: 13.026, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/post-7, kind: t_post, at: [143.55, 114.8], top: 13.026, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal, moved 0.21 m west along the pipe: its column stood through the LIN-4003 S3 post-7 crossbar at 3.3 m (review10#2, D-065 (5)) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/post-8, kind: t_post, at: [145.84, 114.8], top: 13.026, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S2/post-1, kind: t_post, at: [149.34, 99.996], top: 3.19, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4002_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S3/post-1, kind: t_post, at: [144.928, 99.996], top: 5.18, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4002_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S4/post-1, kind: t_post, at: [144.52, 104.301], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S4/post-2, kind: t_post, at: [144.52, 107.102], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S4/post-3, kind: t_post, at: [144.52, 109.903], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S4/post-4, kind: t_post, at: [144.52, 112.704], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S4/post-5, kind: t_post, at: [144.52, 115.504], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S4/post-6, kind: t_post, at: [144.52, 118.305], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S4/post-7, kind: t_post, at: [144.52, 121.106], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S4/post-8, kind: t_post, at: [144.52, 123.907], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S4], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S5/post-1, kind: t_post, at: [149.107, 125], top: 5.18, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S5/post-2, kind: t_post, at: [151.985, 125], top: 5.18, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S5/post-3, kind: t_post, at: [154.864, 125], top: 5.18, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S5/post-4, kind: t_post, at: [157.743, 125], top: 5.18, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S5/post-5, kind: t_post, at: [160.5, 124.879], top: 5.18, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S7/post-1, kind: t_post, at: [164.89, 122], top: 0.99, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4002_S7], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S7/post-2, kind: t_post, at: [167.75, 122.07], top: 0.99, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S7], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S8/post-1, kind: t_post, at: [146.228, 123.132], top: 7.693, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S8], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S8/post-2, kind: t_post, at: [146.228, 121.265], top: 7.693, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S8], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S8/post-3, kind: t_post, at: [146.228, 119.397], top: 7.693, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S8], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4002_S8/post-4, kind: t_post, at: [146.228, 117.53], top: 7.693, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4002_S8], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4003_S2/post-1, kind: t_post, at: [154.701, 116.805], top: 7.943, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4003_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4003_S2/post-2, kind: t_post, at: [154.84, 115.296], top: 7.943, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4003_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4003_S2/post-3, kind: t_post, at: [154.84, 113.648], top: 7.943, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4003_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  # LIN-4003 S3 on x 144.1 (D-051 (9)): posts 1 .. 7 every 1.95 m from y 103.1, post-8 at the
+  # bend, spans at most 2.1 m (DN 25 liquid, ASSUMED table)
+  - {id: P-04/Line_LIN4003_S3/post-1, kind: t_post, at: [144.1, 103.1], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4003_S3], notes: "proposal moved with the run to x 144.1 (ASSUMED: check the support with the stress engineer; D-051 (9))"}
+  - {id: P-04/Line_LIN4003_S3/post-2, kind: t_post, at: [144.1, 105.05], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4003_S3], notes: "proposal moved with the run to x 144.1 (ASSUMED: check the support with the stress engineer; D-051 (9))"}
+  - {id: P-04/Line_LIN4003_S3/post-3, kind: t_post, at: [144.1, 107.0], top: 3.4, from: grade, width: 0.4, rotation_deg: 0, serves: [P-04/Line_LIN4003_S3], notes: "proposal moved with the run to x 144.1; crossbar 0.4 m (was 1 m), clear of the LIN-4002 S4 post-2 column at x 144.52 it ran into (review10#2, D-065 (5)) (ASSUMED: check the support with the stress engineer; D-051 (9))"}
+  - {id: P-04/Line_LIN4003_S3/post-4, kind: t_post, at: [144.1, 108.95], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4003_S3], notes: "proposal moved with the run to x 144.1 (ASSUMED: check the support with the stress engineer; D-051 (9))"}
+  - {id: P-04/Line_LIN4003_S3/post-5, kind: t_post, at: [144.1, 110.9], top: 3.4, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4003_S3], notes: "proposal moved with the run to x 144.1 (ASSUMED: check the support with the stress engineer; D-051 (9))"}
+  - {id: P-04/Line_LIN4003_S3/post-6, kind: t_post, at: [144.1, 112.85], top: 3.4, from: grade, width: 0.4, rotation_deg: 0, serves: [P-04/Line_LIN4003_S3], notes: "proposal moved with the run to x 144.1; crossbar 0.4 m (was 1 m), clear of the LIN-4002 S4 post-4 column at x 144.52 it ran into (review10#2, D-065 (5)) (ASSUMED: check the support with the stress engineer; D-051 (9))"}
+  - {id: P-04/Line_LIN4003_S3/post-7, kind: t_post, at: [144.1, 114.8], top: 3.4, from: grade, width: 0.4, rotation_deg: 0, serves: [P-04/Line_LIN4003_S3], notes: "proposal moved with the run to x 144.1; crossbar 0.4 m (was 1 m), clear of the LIN-3001 S2 post-7 column (review10#2, D-065 (5)) (ASSUMED: check the support with the stress engineer; D-051 (9))"}
+  - {id: P-04/Line_LIN4003_S3/post-8, kind: t_post, at: [144.2, 116.795], top: 3.4, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4003_S3], notes: "proposal moved to 0.1 m past the bend (ASSUMED: check the support with the stress engineer; D-051 (9))"}
+  - {id: P-04/Line_LIN4003_S3/post-9, kind: t_post, at: [146.471, 116.795], top: 3.4, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4003_S3/post-10, kind: t_post, at: [148.428, 116.795], top: 3.4, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4003_S3/post-11, kind: t_post, at: [150.384, 116.795], top: 3.4, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S1/post-1, kind: t_post, at: [153, 130.626], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S1/post-2, kind: t_post, at: [153, 128.851], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S1/post-3, kind: t_post, at: [153, 127.077], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S1/post-4, kind: t_post, at: [153, 125.302], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S1/post-5, kind: t_post, at: [153, 123.528], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S2/post-1, kind: t_post, at: [153, 119.865], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S2/post-2, kind: t_post, at: [153, 117.977], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S2/post-3, kind: t_post, at: [153, 116.089], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S2/post-4, kind: t_post, at: [154.574, 115.776], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4004_S2/post-5, kind: t_post, at: [154.574, 113.888], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S1/post-1, kind: t_post, at: [143.0, 67.978], top: 9.848, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX3001_S1], notes: "pinned proposal, moved 0.11 m east to the bend, clear of the LIN-3001 S1 riser (was 0.05 m; review8#7, D-055 (4)) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-1, kind: t_post, at: [141.124, 102.888], top: 3.826, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-2, kind: t_post, at: [140.2, 105.631], top: 9.348, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-3, kind: t_post, at: [140.2, 107.637], top: 9.348, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-4, kind: t_post, at: [140.2, 109.642], top: 9.348, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-5, kind: t_post, at: [140.2, 111.647], top: 9.348, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-6, kind: t_post, at: [140.2, 113.652], top: 9.348, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-7, kind: t_post, at: [140.2, 115.658], top: 9.348, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-8, kind: t_post, at: [139.037, 116.5], top: 9.348, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-9, kind: t_post, at: [137.032, 116.5], top: 9.348, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-10, kind: t_post, at: [135.026, 116.5], top: 9.348, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-11, kind: t_post, at: [133.021, 116.5], top: 9.348, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-12, kind: t_post, at: [131.016, 116.5], top: 9.348, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-13, kind: t_post, at: [129.011, 116.5], top: 9.348, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX3001_S2/post-14, kind: t_post, at: [127.005, 116.5], top: 9.348, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX3001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S1/post-1, kind: t_post, at: [124.317, 101.496], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-1, kind: t_post, at: [133.594, 101.496], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-2, kind: t_post, at: [136.394, 101.496], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-3, kind: t_post, at: [139, 101.302], top: 3.79, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-4, kind: t_post, at: [139, 98.501], top: 3.79, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-5, kind: t_post, at: [139, 95.701], top: 3.79, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-6, kind: t_post, at: [139, 92.901], top: 3.79, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-7, kind: t_post, at: [141.399, 92.5], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-8, kind: t_post, at: [144.199, 92.5], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-9, kind: t_post, at: [146.999, 92.5], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-10, kind: t_post, at: [149.799, 92.5], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-11, kind: t_post, at: [152.6, 92.5], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-12, kind: t_post, at: [155.4, 92.5], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S5/post-13, kind: t_post, at: [158.2, 92.5], top: 3.79, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S5], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S7/post-1, kind: t_post, at: [164.8, 92.5], top: 0.99, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S7], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S7/post-2, kind: t_post, at: [167.6, 92.5], top: 0.99, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4002_S7], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S8/post-1, kind: t_post, at: [130.794, 103.155], top: 3.803, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4002_S8], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4002_S8/post-2, kind: t_post, at: [130.794, 104.814], top: 3.803, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4002_S8], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4003_S1/post-1, kind: t_post, at: [130.794, 108.133], top: 3.833, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4003_S1/post-2, kind: t_post, at: [130.544, 110.05], top: 3.833, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4003_S1, P-04/Line_LOX4003_S3], notes: "common support of LOX-4003 S1 (x 130.794) and the S3 return leg (x 130.294), both at 4.0 m: replaces this post (130.794, 109.792) and S3 post-5 (130.257, 109.996), whose crossbars crossed; column between the legs, crossbar 1 m under both (review10#2, D-065 (5)) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4003_S3/post-1, kind: t_post, at: [128.794, 103.489], top: 3.833, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4003_S3/post-2, kind: t_post, at: [128.794, 105.481], top: 3.833, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4003_S3/post-3, kind: t_post, at: [128.794, 107.474], top: 3.833, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4003_S3/post-4, kind: t_post, at: [128.794, 109.466], top: 3.833, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S1/post-1, kind: t_post, at: [128, 130.575], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S1/post-2, kind: t_post, at: [128, 128.75], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S1/post-3, kind: t_post, at: [128, 126.924], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S1/post-4, kind: t_post, at: [128, 125.099], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S1/post-5, kind: t_post, at: [128, 123.274], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S2/post-1, kind: t_post, at: [128, 119.57], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S2/post-2, kind: t_post, at: [128, 117.691], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S2/post-3, kind: t_post, at: [128, 115.811], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S2/post-4, kind: t_post, at: [128.968, 114.9], top: 0.796, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LOX4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4004_S2/post-5, kind: t_post, at: [129.5, 113.553], top: 0.796, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4004_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_VNT4002_S1/post-1, kind: stub, at: [180.3, 56.822], top: 9.368, from: steel, base: 8.65, rotation_deg: 0, serves: [P-04/Line_VNT4002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_VNT4002_S1/post-2, kind: t_post, at: [180.3, 61.838], top: 9.368, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_VNT4002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_VNT4002_S1/post-3, kind: t_post, at: [182.8, 64.355], top: 9.368, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_VNT4002_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_VNT4002_S3/post-1, kind: t_post, at: [185, 117.451], top: 9.368, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_VNT4002_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_VNT4003_S1/post-1, kind: t_post, at: [183.363, 122.538], top: 4.9, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_VNT4003_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-1, kind: t_post, at: [140.55, 45.8], top: 5.252, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-2, kind: t_post, at: [142.6, 45.8], top: 5.252, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_LIN3001_S1], notes: "proposal moved 0.1 m east, out of the escape route Z-ESC-CB1 (ASSUMED: check the support with the stress engineer; D-051 (7))"}
+  - {id: P-03/Line_LIN3001_S1/post-3, kind: t_post, at: [142.7, 47.55], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-4, kind: t_post, at: [142.7, 49.5], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-5, kind: t_post, at: [142.7, 51.45], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-6, kind: t_post, at: [142.7, 53.4], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-7, kind: t_post, at: [142.7, 55.35], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-8, kind: t_post, at: [142.7, 57.3], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-9, kind: t_post, at: [142.7, 59.25], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-10, kind: t_post, at: [142.7, 61.2], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LIN3001_S1/post-11, kind: t_post, at: [142.7, 63.15], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S1/post-1, kind: t_post, at: [142.7, 66.45], top: 5.252, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LIN3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-02/Line_RG2003_S8/post-2, kind: t_post, at: [106, 37.438], top: 5.9, from: grade, width: 1, rotation_deg: 0, serves: [P-02/Line_RG2003_S8], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/post-4, kind: t_post, at: [180.841, 60.303], top: 3.786, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_CW4001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4001_S3/post-2, kind: t_post, at: [162, 43.334], top: 10.208, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_GOX4001_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4002_S13/post-3, kind: stub, at: [178.893, 59.363], top: 10.012, from: steel, base: 8.65, rotation_deg: 90, serves: [P-04/Line_GOX4002_S13], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN4003_S3/post-12, kind: t_post, at: [145.406, 116.795], top: 3.4, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LOX4003_S3/SP-11.1, kind: t_post, at: [130.294, 111.122], top: 3.833, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_LOX4003_S3], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_LOX3001_S1/SP-12.2, kind: t_post, at: [129, 45.883], top: 12.126, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_LOX3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GOX4002_S12/SP-6.5, kind: stub, at: [180.8, 47.948], top: 10.408, from: steel, base: 9.919, rotation_deg: 0, serves: [P-04/Line_GOX4002_S12], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  # GOX-4002 S12 SP-8.9 .. SP-19.9: T-posts from grade, no longer 6.6 .. 7.1 m "stubs" on the
+  # CW-4001 / CWR-4001 T-post crossbars (review9#1, D-062 (1)); each moved along the pipe to stand
+  # 0.3 m or more off the crossbars of the CW-4001 / CWR-4001 / VNT-4002 posts and the CW / CWR runs
+  # crossing x 180.8, crossbar 0.45 m so it stays clear of GOX-4002 S4 / S5 (x 180.3); spans
+  # 2.5 .. 4.5 m (< 4.6 m, DN 80 gas)
+  - {id: P-04/Line_GOX4002_S12/SP-8.9, kind: t_post, at: [180.8, 50.4], top: 10.408, from: grade, width: 0.45, rotation_deg: 0, serves: [P-04/Line_GOX4002_S12], notes: "T-post from grade, 0.4 m south of the CW-4001 post-3 crossbar it stood on (ASSUMED: check the support with the stress engineer; D-062 (1))"}
+  - {id: P-04/Line_GOX4002_S12/SP-11.0, kind: t_post, at: [180.8, 53.9], top: 10.408, from: grade, width: 0.45, rotation_deg: 0, serves: [P-04/Line_GOX4002_S12], notes: "T-post from grade, 0.37 m south of the CWR-4001 post-4 crossbar it stood on (ASSUMED: check the support with the stress engineer; D-062 (1))"}
+  - {id: P-04/Line_GOX4002_S12/SP-15.4, kind: t_post, at: [180.8, 57.9], top: 10.408, from: grade, width: 0.45, rotation_deg: 0, serves: [P-04/Line_GOX4002_S12], notes: "T-post from grade, 0.39 m south of the CWR-4001 post-5 crossbar it stood on (ASSUMED: check the support with the stress engineer; D-062 (1))"}
+  - {id: P-04/Line_GOX4002_S12/SP-19.9, kind: t_post, at: [180.8, 61.45], top: 10.408, from: grade, width: 0.45, rotation_deg: 0, serves: [P-04/Line_GOX4002_S12], notes: "T-post from grade between the CW-4001 post-4 crossbar and the VNT-4002 post-2 crossbar (0.39 m south of it), no longer on the CWR-4001 post-6 crossbar (ASSUMED: check the support with the stress engineer; D-062 (1))"}
+  # D-074 (review11#14): the E-3105 chilled-water pair CHW-3001 / CHWR-3001 (DN50, both at 2.7 m)
+  # on shared T-posts at <= 3 m (the DN50 liquid span), the north-south run at x 144.5 / 144.8
+  # west of the crane pad Z-PAD-A4N, the east-west run at y 26.6 / 26.2 (ASSUMED: check the
+  # supports with the stress engineer)
+  - {id: CHW-3001/post-1, kind: t_post, at: [144.65, 29.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-2, kind: t_post, at: [144.65, 32.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-3, kind: t_post, at: [144.65, 35.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-4, kind: t_post, at: [144.65, 38.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-5, kind: t_post, at: [144.65, 41.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-6, kind: t_post, at: [144.65, 44.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-7, kind: t_post, at: [144.65, 47.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-8, kind: t_post, at: [144.65, 50.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-9, kind: t_post, at: [144.65, 53.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-10, kind: t_post, at: [144.65, 56.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-11, kind: t_post, at: [144.65, 59.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-12, kind: t_post, at: [144.65, 62.0], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-13, kind: t_post, at: [143.5, 26.4], top: 2.57, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-14, kind: t_post, at: [140.8, 26.4], top: 2.57, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post, west of the escape route (ASSUMED)"}
+  - {id: CHW-3001/post-15, kind: t_post, at: [138.0, 26.4], top: 2.57, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post (ASSUMED)"}
+  - {id: CHW-3001/post-16, kind: t_post, at: [135.8, 26.4], top: 2.57, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CHW3001_S1, P-03/Line_CHWR3001_S1], notes: "D-074 shared T-post, 0.5 m east of the CHW-3001 drop to the E-3105 east head (D-077) (ASSUMED)"}
+  - {id: CHW-3001/post-17, kind: t_post, at: [132.8, 26.4], top: 2.57, from: grade, width: 1, rotation_deg: 90, serves: [P-03/Line_CHWR3001_S1], notes: "D-077 T-post under CHWR-3001, which now ends at the E-3105 west channel (ASSUMED)"}
+  - {id: P-01/Line_CHW3001_S1/SP-1.6, kind: t_post, at: [48.837, 64.3], top: 3.786, from: grade, width: 0.6, rotation_deg: 0, serves: [P-01/Line_CHW3001_S1], notes: "pinned proposal moved 1 m north, out of the P-1102B access space; crossbar 0.6 m, 0.12 m clear of CHW-1001 S6 beside it (D-074, D-076) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR1001_S2/SP-10.5, kind: t_post, at: [74.665, 51.863], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR1001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR1001_S2/SP-14.8, kind: t_post, at: [74.665, 56.209], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR1001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR1001_S2/SP-19.2, kind: t_post, at: [74.665, 60.556], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR1001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR3001_S1/SP-72.0, kind: t_post, at: [76.2, 61.503], top: 4.47, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR3001_S1/SP-75.0, kind: t_post, at: [76.2, 58.507], top: 4.47, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR3001_S1/SP-78.0, kind: t_post, at: [76.2, 55.51], top: 4.47, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR1001_S2/SP-23.5, kind: t_post, at: [74.665, 64.902], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR1001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR1001_S2/SP-55.1, kind: t_post, at: [51.909, 63.628], top: 3.732, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR1001_S2], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-01/Line_CHWR3001_S1/SP-81.0, kind: t_post, at: [76.2, 52.514], top: 4.47, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CHWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CHW3001_S1/SP-40.0, kind: t_post, at: [144.5, 27.3], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHW3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-03/Line_CHWR3001_S1/SP-15.5, kind: t_post, at: [144.8, 26.95], top: 2.57, from: grade, width: 1, rotation_deg: 0, serves: [P-03/Line_CHWR3001_S1], notes: "pinned proposal (ASSUMED: check the support with the stress engineer)"}
+  # D-085: supports for the free spans and missing supports of review3#4 (ASSUMED: check them
+  # with the stress engineer). Proposals that stood in V-3101 (LOX-3002) and T-4102 (LIN-3001 at
+  # the tank) are not taken; posts placed by hand where the build found no clear place
+  - {id: P-01/Line_CWR1004_S1/SP-29.9, kind: t_post, at: [64.698, 62.0], top: 3.576, from: grade, width: 1, rotation_deg: 0, serves: [P-01/Line_CWR1004_S1], notes: "proposal moved 0.9 m north, out of the P-1101B access space; spans 7.0 / 2.0 m (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/SP-150.9, kind: t_post, at: [177.59, 66.382], top: 3.786, from: grade, width: 1, rotation_deg: 0, serves: [P-04/Line_CW4001_S1], notes: "pinned proposal (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/post-9, kind: t_post, at: [182.0, 57.1], top: 3.786, from: grade, width: 2.2, rotation_deg: 0, serves: [P-04/Line_CW4001_S1, P-04/Line_CWR4001_S1], notes: "by hand, the 9.5 m span to post-3 split in three; column 0.8 m east of the CWR-4001 run 0.45 m below CW-4001, the crossbar carries CW-4001 and is the hold-down guide of CWR-4001 under it (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CW4001_S1/post-10, kind: t_post, at: [182.0, 53.95], top: 3.786, from: grade, width: 2.2, rotation_deg: 0, serves: [P-04/Line_CW4001_S1, P-04/Line_CWR4001_S1], notes: "by hand, as post-9 (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_CWR4002_S1/post-3, kind: t_post, at: [168.933, 59.9], top: 3.786, from: grade, width: 0.5, rotation_deg: 0, serves: [P-04/Line_CWR4002_S1], notes: "by hand, half way along the 5.4 m span from the riser to post-1; crossbar 0.5 m, clear of GAN-4004 (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_GAN4004_S1/post-2, kind: t_post, at: [170.2, 58.4], top: 9.814, from: grade, width: 1.8, rotation_deg: 0, serves: [P-04/Line_GAN4004_S1], notes: "by hand, 1.2 m south of the UN-3001 riser, column 0.8 m east of the GAN-4002 run at grade; splits the 6.2 m span (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_UN3001_S1/post-7, kind: t_post, at: [168.2, 62.6], top: 10.333, from: grade, width: 1.6, rotation_deg: 0, serves: [P-04/Line_UN3001_S1], notes: "by hand, mid-way along the 6.0 m run at 10.39 m; column 0.7 m west of CWR-4002 (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/SP-29.3, kind: stub, at: [141.68, 114.8], top: 13.526, from: steel, base: 13.026, rotation_deg: 90, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/SP-31.4, kind: t_post, at: [143.76, 114.8], top: 13.526, from: grade, width: 1, rotation_deg: 90, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (D-085) (ASSUMED: check the support with the stress engineer)"}
+  - {id: P-04/Line_LIN3001_S2/SP-33.4, kind: stub, at: [145.84, 114.8], top: 13.526, from: steel, base: 13.026, rotation_deg: 90, serves: [P-04/Line_LIN3001_S2], notes: "pinned proposal (D-085) (ASSUMED: check the support with the stress engineer)"}
+  # D-091 (2) (review3#2): PSV-3114 / PSV-3116 open tailpipes on the relief valve platform RV,
+  # screened after the API 520 Part II open-discharge method instead of a stress analysis (none
+  # will be done). Design reactions (warm bound, ASSUMED rates): PSV-3114 9.3 kN, PSV-3116
+  # 14.6 kN, axial (downwards) on the straight vertical exits. cheme-as-code 0.8.0 generates
+  # guides only on horizontal rack runs, so the guide and the axial support are declared as
+  # support steel here, two T-posts on the RV platform steel between the valves: RV-TPG, the
+  # lateral guide, its crossbar 0.5 m below the open ends (57.75 m); RV-TPS, the axial support,
+  # its crossbar at 55.3 m (2.1 m headroom over the RV floor at 53 m), where a lug welded to each
+  # tailpipe bears on it (dynamic load factor 2 ASSUMED: 19 / 29 kN). Both stand on the tailpipe
+  # axis y 43.0, RV-TPG's column continuing from the RV-TPS crossbar, and each crossbar ends
+  # 0.22 m off the DN150 pipe surfaces, in line with the load (review19#4; the guide lugs and the
+  # bearing brackets are not modelled, D-091 O6). Every size ASSUMED (structural detail design
+  # confirms them)
+  - {id: RV-TPG, kind: t_post, at: [129.5, 43.0], top: 57.75, from: steel, base: 55.3, width: 2.4, rotation_deg: 0, serves: [P-03/Line_VNT3002_S2, P-03/Line_VNT3003_S2], notes: "D-091 (2): lateral guide of the PSV-3114 / PSV-3116 tailpipes at 57.75 m (0.5 m below the open ends at 58.25 m), design load the full reaction laterally, 9.3 / 14.6 kN (ASSUMED); column continued from the RV-TPS crossbar at 55.3 m, on the tailpipe axis between the valves"}
+  - {id: RV-TPS, kind: t_post, at: [129.5, 43.0], top: 55.3, from: steel, base: 53.0, width: 2.4, rotation_deg: 0, serves: [P-03/Line_VNT3002_S2, P-03/Line_VNT3003_S2], notes: "D-091 (2): axial support of the PSV-3114 / PSV-3116 tailpipes, a lug on each tailpipe at 55.3 m bearing on the crossbar ends, 9.3 x 2 = 19 kN / 14.6 x 2 = 29 kN downwards (dynamic load factor 2 ASSUMED), so the reaction does not load the valve bodies; on the tailpipe axis y 43.0, so the bearing is in line (review19#4)"}

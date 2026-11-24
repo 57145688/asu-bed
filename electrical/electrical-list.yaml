@@ -1,0 +1,83 @@
+# Electrical list. Schema: `cheme schema electrical`. Skill electrical-cabling.
+# Basic-engineering electrical philosophy, every value ASSUMED (DESIGN.md D-036): supply 33 kV
+# from the grid, MV 6.6 kV for motors above 200 kW, LV 400 V; the electrical engineer replaces
+# the powers, voltages and room allocation with load list and single-line diagram values.
+substations:
+  - {id: SS-1, title: "Main substation in the substation and control building B2", building: B2, incoming_kv: 33}
+transformers:
+  - {tag: TR-1, substation: SS-1, rating_kva: 16000, primary_kv: 33, secondary_v: 6600, feeds: [SWG-1], notes: "MAC 9.0 MW (D-066, was 8) + GOX compressor 2.5 MW (D-075, was 2.3) + GAN 0.315 MW + LV transformer 2.5 MVA, ~0.85 load factor (ASSUMED): 13.7 MVA on the connected ratings at pf 0.9 / efficiency 0.96, running load ~12.4 MVA (MAC 7.29 at the 6.02 bara of D-089 + GOX 2.26 + GAN 0.24 MW electric simulated, LV ~1.4 MW peak, at pf 0.9; ~78 % of 16 MVA; D-090, was ~12.3 MVA on the MAC 7.13 MW of D-066); 16 MVA kept (D-070). The 9 MW MAC motor needs a reduced-voltage start (ASSUMED, motor starting study, D-070)"}
+  - {tag: TR-2, substation: SS-1, rating_kva: 2500, primary_kv: 6.6, secondary_v: 400, feeds: [MCC-1], notes: "Pumps, heater, lighting, HVAC, small power (ASSUMED)"}
+rooms:
+  - {id: SWG-1, kind: switchgear, title: "6.6 kV switchgear", building: B2, substation: SS-1, voltage_v: 6600}
+  - {id: MCC-1, kind: mcc, title: "400 / 690 V motor control centre", building: B2, substation: SS-1, voltage_v: 400}
+  - {id: CR-1, kind: control, title: "Control room with the DCS and SIS marshalling", building: B2}
+defaults: {lv_room: MCC-1, mv_room: SWG-1, control_room: CR-1, lv_voltage_v: 400, mv_voltage_v: 6600, mv_above_kw: 200}
+motors:
+  # powers from the equipment list notes where they give one, else estimated from the duty
+  # (hydraulic power / ~0.7 efficiency, rounded up to a standard motor), all ASSUMED
+  # the two large MV motors are not fed by tray (D-036, D-038 (5)): the MAC motor straight from
+  # SWG-1 through the B2 cable cellar and a covered trench into the B1 floor trench (B2 is 2 m
+  # north of B1; review3#1: no tray over the B1 roof); the GOX compressor motor by tray along
+  # PR1 to a cable pit under the rack and from there in a covered trench to the open east side
+  # of FW-4101 (feeder K-4101-MV below; review4#5: no tray over K-4101 in its lift path)
+  - {driven: K-1101, power_kw: 9000, assumed: true, source: "equipment list K-1101: 9.0 MW, 6.6 kV motor (D-066, ASSUMED; was 8.0 MW, D-002); 7,288 kW electric / 6,894 kW shaft simulated at the 6.02 bara discharge (D-089), 8,152 kW at 110 % of the rated flow (D-090): 9.0 MW holds (10.4 % margin)",
+     skip: "MV cable 6.6 kV, 9 MW (~900 A full load at pf 0.9, efficiency 0.97; cable size by the electrical engineer), from SWG-1 through the B2 cable cellar and a 2 m covered trench into the B1 floor trench to the motor terminal box, about 25 m (ASSUMED); no tray (D-038 (5))"}
+  - {driven: K-4101, power_kw: 2500, assumed: true, source: "equipment list K-4101: 2.5 MW, the next motor size above 2.3 MW, carried until the vendor confirms (D-075; 2,414 kW with the API 617 110 % margin)",
+     skip: "fed as K-4101-MV (feeders): tray along PR1 to the cable pit under the rack, then a covered trench to the motor (D-038 (5))"}
+  - {driven: K-4102, power_kw: 315, assumed: true, source: "equipment list K-4102: ~0.3 MW; next standard motor 315 kW (ASSUMED)",
+     skip: "fed as K-4102-M (feeders): terminal box on the motor's north face, the tray drops north of the compressor, out of its lift lane (D-041)"}
+  - {driven: P-1101A, power_kw: 45, assumed: true, source: "~250 m3/h at ~40 m head: ~39 kW shaft; standard 45 kW (ASSUMED); datasheet 33.3 / 34.1 m, 30.1 / 30.9 kW shaft at the 6.02 bara DCAC (D-090): 45 kW holds"}
+  - {driven: P-1101B, power_kw: 45, assumed: true, source: "as P-1101A (ASSUMED)"}
+  - {driven: P-1102A, power_kw: 15, assumed: true, source: "re-selected (D-069): 44 m3/h at ~78 m head (5.92 bara, D-089), ~12.5 kW shaft at eta 0.75 (P-1102A datasheet, D-090); next standard 15 kW (ASSUMED; was 18.5 kW for ~100 m3/h)"}
+  - {driven: P-1102B, power_kw: 15, assumed: true, source: "as P-1102A (ASSUMED)"}
+  - {driven: P-4101A, power_kw: 15, assumed: true, source: "5.2 t/h LOX to 31 bara: ~4.6 m3/h x 30 bar ~4 kW hydraulic, low pump efficiency at this duty; 15 kW (ASSUMED)"}
+  - {driven: P-4101B, power_kw: 15, assumed: true, source: "as P-4101A (ASSUMED)"}
+  - {driven: P-4102A, power_kw: 11, assumed: true, source: "6.3 t/h LIN to 9 bara: ~7.8 m3/h x 9 bar ~2 kW hydraulic; 11 kW (ASSUMED)"}
+  - {driven: P-4102B, power_kw: 11, assumed: true, source: "as P-4102A (ASSUMED)"}
+  - {driven: K-3101, skip: "the booster is braked by the expander KT-3101 on the same shaft (compander): no motor"}
+feeders:
+  # the GOX compressor motor cable ends in the tray model at the cable pit under the PR1 power
+  # lane (x 169); from there ~40 m in a covered trench south to the motor terminal box, entering
+  # FW-4101 from its open east side at grade, out of the K-4101 lift path (D-038 (5))
+  - {tag: K-4101-MV, item: K-4101, point: [169.0, 71.9, 0.3], power_kw: 2500, voltage_v: 6600, power_factor: 0.78, room: SWG-1, assumed: true, source: "equipment list K-4101: 2.5 MW (ASSUMED, D-075); power factor 0.78 = motor pf 0.85 x efficiency 0.92 (ASSUMED, D-108)", notes: "GOX compressor motor M-K-4101; the trench run of ~40 m from the pit to the terminal box is not in the tray model (add it to the cable length)"}
+  - {tag: E-2101, point: [92.0, 57.5, 1.5], power_kw: 1130, voltage_v: 690, room: MCC-1, assumed: true, source: "equipment list E-2101: ~1.13 MW peak regeneration heater (D-066, was 1.0 MW); 690 V thyristor supply (ASSUMED)", notes: "tray ends 1.5 m north of the heater, flexible conduit into the terminal box on its north face: clear of the RG-2002 outlet on top and of the lift lane from Z-PAD-A2 on the east (D-041)"}
+  # the GAN compressor motor: terminal box on the north face at 1 m, the tray comes down from
+  # PR1 north of the compressor, not over it (lift lane from Z-PAD-A4N on the south, D-041)
+  - {tag: K-4102-M, item: K-4102, point: [157.5, 58.7, 1.0], power_kw: 315, voltage_v: 6600, power_factor: 0.78, room: SWG-1, assumed: true, source: "equipment list K-4102: ~0.3 MW; next standard motor 315 kW (ASSUMED); power factor 0.78 = motor pf 0.85 x efficiency 0.92 (ASSUMED, D-108)", notes: "GAN compressor motor M-K-4102"}
+junction_boxes:
+  # pinned from the build's proposals after review (D-036): outside buildings and the cold box
+  # casing, beside a walkway, at 1.2 m; at most 24 instrument cables each (ASSUMED)
+  - {tag: JB-A1-1, point: [60.0, 50.0, 1.2], capacity: 24, notes: "MAC and precooling, north of B1 (the proposal stood inside B1 by its north wall)",
+     instruments: [FIC-1101, FIC-1108, FV-1108, LIC-1106, LIC-1107, LIC-1114, LV-1106, LV-1107, LV-1114, PDIA-1101, PIC-1103, TIA-1110, TIA-1111, TIC-1105, TV-1105, UIC-1102, UV-1102, VIA-1104]}
+  # SIS junction boxes (D-114): the sensors and final elements of the SIL-rated interlocks are
+  # cabled apart from the control system's, so a common junction box or home run cannot defeat
+  # both a control loop and the trip credited against its failure (D-111); beside the control
+  # system's box of the same area; the SIS cabinet's location is detail engineering
+  - {tag: JB-A1-S1, point: [61.5, 50.0, 1.2], capacity: 24, notes: "SIS: DCAC trips I-03, I-06 (D-114)",
+     instruments: [LSHH-1106, LSLL-1115, XV-1115, PSLL-1116]}
+  - {tag: JB-A2-1, point: [85.0, 33.0, 1.2], capacity: 24, notes: "adsorber switching valves, at the west end of the adsorbers outside the change-out area (the proposal stood in V-2101B)",
+     instruments: [KS-2101, PDI-2115A, PDI-2115B, PDIA-2106, TI-2113A, TI-2113B, TI-2114A, TI-2114B, TIC-2104, "XV-21*"]}
+  - {tag: JB-A2-2, point: [106.5, 59.5, 1.2], capacity: 24, notes: "analysers and the regeneration flow; the E-2101 trips I-08, I-09, I-10 to the heater's protection relay, apart from TIC-2104 on JB-A2-1 (D-114)",
+     instruments: [AIA-2102, AIA-2103, FIC-2105, FSLL-2117, TSHH-2107, TSHH-2116]}
+  - {tag: JB-A3-1, point: [132.0, 48.0, 1.2], capacity: 24, notes: "cold box, at the foot of its north platforms; casing instruments are brought out to it",
+     instruments: [AIA-3103, AIA-3105, FIC-3106, FIC-3111, FV-2105, FV-3106, FV-3111, LIC-3101, LICA-3102, LV-3101, PDI-3112, PI-3121, PIC-3110, PIC-3113, PV-3110A, PV-3110B, SIC-3108, TIC-3109, UIC-3120, UV-3120, XV-3105]}
+  - {tag: JB-A3-S1, point: [133.5, 48.0, 1.2], capacity: 24, notes: "SIS: compander trips I-11, I-12 and the LP sump low-low I-14 (D-114)",
+     instruments: [LSLL-3125, PDSLL-3115, SSHH-3108, XV-3117]}
+  - {tag: JB-A3-2, point: [146.0, 60.0, 1.2], capacity: 24, notes: "product analysers and GOX flow east of the cold box (the proposal under PR2 had no clear tray way)",
+     instruments: [AI-3104, FIC-4148, PIC-4101, AIA-3122, TICA-3124, TV-3124]}
+  - {tag: JB-A4-1, point: [166.0, 57.5, 1.2], capacity: 24, notes: "GOX and GAN compressors",
+     instruments: [AI-4115, FIC-3107, PIC-4105, FQI-4149, PV-4105, PIC-4150, PIC-4102, PIC-4106, PV-3113, PV-4101B, UIC-4103, UIC-4131, UV-4103, UV-4131, XV-4119, "XV-412*", XV-4132, XV-4133, XV-4134, XV-4135]}
+  - {tag: JB-A4-S1, point: [167.5, 57.5, 1.2], capacity: 24, notes: "SIS: K-4101 trips I-13, I-17 and its ESD and blowdown valves (D-114)",
+     instruments: [PSHH-4152, TSHH-4104, XV-4116, XV-4117, XV-4118]}
+  - {tag: JB-A4-2, point: [183.0, 66.5, 1.2], capacity: 24, notes: "backup vaporizer controls at the PR1 / PR3 corner",
+     instruments: [PIC-4111, PIC-4112, TSLL-4113, TSLL-4114]}
+  - {tag: JB-A5-1, point: [136.5, 111.5, 1.2], capacity: 24, notes: "storage tanks, between T-4101 and T-4102",
+     instruments: [AIA-4121, LIA-4107, LIA-4108, PICA-4109, PICA-4110, PV-4109, PV-4110, XV-4136, XV-4137]}
+  - {tag: JB-A5-2, point: [177.0, 87.0, 1.2], capacity: 24, notes: "backup vaporizer outlet pressure valves, beside PR3 north of the central road",
+     instruments: [PV-4111, PV-4112]}
+instruments:
+  - {tag: AIA-3122, point: [127.0, 46.5, 53.5], notes: "casing O2 analyser at the breather PSV-3123 on the cold box roof (its line VNT-3004 is not routed)"}
+  - {tag: PSLL-1116, point: [58.0, 50.0, 1.0], notes: "instrument air header low-low (C&E I-19, D-114) where the header leaves the IA package at the north wall of the MAC house B1 (ASSUMED: the utilities are not laid out yet)"}
+notes: >-
+  Junction boxes pinned from the build's proposals (D-036). Instrument and control valve cables go to CR-1; motor cables to SWG-1 (MV) or
+  MCC-1 (LV).

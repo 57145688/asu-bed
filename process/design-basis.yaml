@@ -1,0 +1,60 @@
+# What the plant must do. Schema: `cheme schema design_basis`.
+# Values marked ASSUMED are engineering estimates, not client data. Values marked DESIGN
+# SPECIFICATION (D-099) are fixed by the project owner; a site survey confirms them.
+capacity:
+  basis: GOX product to pipeline
+  gox_t_per_d: 500
+  gox_nm3_per_h: 14600              # 20,833 kg/h / 1.429 kg/Nm3
+  gan_nm3_per_h: 10000
+  liquid_production_kg_per_h: {lox: 600, lin: 600}     # ASSUMED, limited by expander refrigeration (D-003); refill LOX ~17 d, LIN ~21 d
+  operating_hours_per_year: 8400    # ASSUMED
+  turndown_percent: 70              # ASSUMED, MAC inlet guide vanes + GOX compressor recycle
+feeds:
+  - name: Atmospheric air
+    design_specification: "owner decision D-099 (2026-10-24): the design air below (composition, CO2, water, conditions) and the design air rate are the design specification; a site survey confirms them"
+    composition_mol_percent: {N2: 78.084, O2: 20.9476, Ar: 0.934, CO2: 0.042}   # DESIGN SPECIFICATION (D-099): dry air of the U.S. Standard Atmosphere 1976 / ISO 2533 (minor gases ~27 ppm left out), CO2 420 ppm; the flowsheet renormalises the set (S1, D-097)
+    water_and_co2_design_specification: {H2O: "80 % RH at 30 C, 3.354 mol% (IAPWS-95, conditions below; D-058, D-097)", CO2_ppm: 420}   # DESIGN SPECIFICATION (D-099)
+    trace_contaminants_ASSUMED: {total_hydrocarbons_ppm_as_CH4: 5, C2H2_ppb: 50, N2O_ppm: 0.33}   # ASSUMED; hydrocarbon intake survey (site, below)
+    flow_nm3_per_h: 85840           # DESIGN SPECIFICATION (D-099), dry air: the sizing rate of the plant, chosen by the owner (D-066); the O2 recovery ~83 % behind it stays ASSUMED (assumptions below)
+    conditions: {pressure_bara: 1.013, temperature_degc: 30, relative_humidity_percent: 80}   # DESIGN SPECIFICATION (D-099), at the design site
+products:
+  - name: GOX
+    purity: O2 >= 99.5 mol%
+    flow_nm3_per_h: 14600
+    delivery: {pressure_barg: 30, temperature_degc: 40, battery_limit: pipeline}
+  - name: GAN
+    purity: O2 <= 10 ppm(mol)
+    flow_nm3_per_h: 10000
+    delivery: {pressure_barg: 8, temperature_degc: 40, battery_limit: pipeline}
+  - name: LOX backup storage
+    purity: O2 >= 99.5 mol%
+    sizing: 2 d x 25 % of GOX = 250 t; 250 t / 1.141 t/m3 = 219 m3; tank 250 m3 working (ASSUMED margin)
+    backup_rate_nm3_per_h: 3650
+  - name: LIN backup storage
+    purity: O2 <= 10 ppm(mol)
+    sizing: 2 d x 50 % of GAN = 300 t; 300 t / 0.807 t/m3 = 372 m3; tank 400 m3 working (ASSUMED margin)
+    backup_rate_nm3_per_h: 5000
+  - name: Waste nitrogen (argon-rich)
+    note: no argon column; argon leaves with waste N2 to TSA regeneration, evaporative cooler and vent
+utilities:
+  - {name: Cooling water, supply_degc: 25, return_degc: 35, supply_pressure_barg: 4, note: pressure ASSUMED}
+  - {name: Electric power, voltage_kv: 6.6, note: "MAC, GOX and GAN compressor motors at 6.6 kV; 400 V LV"}
+  - {name: Instrument air, pressure_barg: 6, note: "ASSUMED: dry air after TSA, backup N2 from LIN vaporizers"}
+  - {name: Steam, available: false, note: regeneration heater is electric}
+  - {name: Seal and purge gas, note: dry N2 from GAN header for cold box purge and compressor seals}
+site:
+  location: ASSUMED coastal industrial site
+  design_ambient_degc: 30           # DESIGN SPECIFICATION (D-099), with 80 % RH (feeds above)
+  min_ambient_degc: -5              # ASSUMED
+  atmospheric_pressure_bara: 1.013  # DESIGN SPECIFICATION (D-099)
+  elevation_m: 5                    # ASSUMED
+  air_quality: ASSUMED moderate industrial; hydrocarbon intake survey required before basic engineering
+  seismic_and_wind: ASSUMED per local code, not yet defined
+assumptions:
+  - "ASSUMED O2 recovery ~83 % (D-066: no argon column, 99.5 % purity, GAN drawn from the HP column (13 % of the HP column air), 13 % Lachmann air; was 94 %, which the simulated double column does not reach)."
+  - "ASSUMED MAC discharge 5.8 bara, HP column top 5.4 bara, LP column top 1.3 bara."
+  - "ASSUMED refrigeration by booster-braked expander, Lachmann air to the LP column, ~11,500 Nm3/h, ~198 kW (D-061); the boosted air enters the main exchanger at 15 C (D-067)."
+  - "ASSUMED regeneration gas ~14,600 Nm3/h waste N2 (D-066), heated electrically to 200 C."
+  - "ASSUMED DCAC air outlet 12 C via chilled water from an N2 evaporative cooler; no mechanical chiller. All waste N2 not used for regeneration goes to the evaporative cooler; its chilled water also trims the booster air to 15 C (D-067)."
+  - "ASSUMED GAN taken as pressurized N2 from the HP column top (~5.2 bara) and compressed to 9 bara."
+  - "ASSUMED all flows, pressures, duties and DNs are concept estimates, accuracy about +/-30 %."

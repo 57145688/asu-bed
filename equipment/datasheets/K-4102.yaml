@@ -1,0 +1,185 @@
+# Datasheet, first drafted by `cheme datasheets draft` from equipment/equipment-list.yaml, pid/P-04.xml, process/flowsheet.yaml.
+# Final (`draft: false`): every value says where it comes from (source); assumed: true marks a
+# value derived on an assumption, to confirm; a `supplier` or `not_applicable` value gives its
+# reason. Schema: `cheme schema datasheet`.
+tag: K-4102
+type: CentrifugalCompressor
+service: GAN compressor
+draft: false
+operating:
+  inlet_pressure:
+    value: 5.2
+    unit: bar(a)
+    source: 'process/flowsheet.yaml stream S9 (case design), assumed: DESIGN.md 3, stream 9'
+    assumed: true
+  inlet_temperature:
+    value: 13.0
+    unit: °C
+    source: 'process/flowsheet.yaml stream S9 (case design), assumed: the E-3101 warm end at 13 C, 2 K
+      below the main air (DESIGN.md D-061)'
+    assumed: true
+  inlet_flow:
+    value: 12510.0
+    unit: kg/h
+    source: 'process/flowsheet.yaml stream S9 (case design), given: plant.yaml: 10,000 Nm3/h GAN; DESIGN.md
+      3, stream 9'
+  outlet_pressure:
+    value: 9.0
+    unit: bar(a)
+    source: 'process/flowsheet.yaml stream S9B (case design), given: plant.yaml: 8 barg; DESIGN.md 3,
+      stream 9'
+  outlet_temperature:
+    value: 40.0
+    unit: °C
+    source: 'process/flowsheet.yaml stream S9B (case design), assumed: DESIGN.md 3, stream 9'
+    assumed: true
+  outlet_flow:
+    value: 12510.0
+    unit: kg/h
+    source: 'process/flowsheet.yaml stream S9B (case design), given: DESIGN.md 3, stream 9'
+design:
+  pressure_barg:
+    value: 11.0
+    unit: barg
+    source: equipment/equipment-list.yaml
+  temperature_degc:
+    value: 150.0
+    unit: degC
+    source: equipment/equipment-list.yaml
+materials:
+  main:
+    value: CS / SS impeller
+    source: equipment/equipment-list.yaml
+dimensions:
+  overall_length:
+    value: 8.0
+    unit: m
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.length; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the supplier sets it'
+    assumed: true
+  overall_width:
+    value: 5.0
+    unit: m
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.width; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the supplier sets it'
+    assumed: true
+  overall_height:
+    value: 4.0
+    unit: m
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.height; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the supplier sets it'
+    assumed: true
+  axis_deg:
+    value: 0.0
+    unit: deg
+    source: 'cheme datasheets fill: layout/plant-model.yaml K-4102 rotation_deg (layout/equipment-placement.yaml)'
+weights:
+  empty:
+    value: 25.0
+    unit: t
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.weight (empty); ASSUMED
+      (equipment list header, DESIGN.md D-034): typical size of the duty, the item''s basis in its list
+      note; the supplier gives the weight'
+    assumed: true
+nozzles:
+- name: N1
+  dn: 250
+  lines:
+  - GAN-4001
+  source: pid/P-04.xml
+- name: N2
+  dn: 150
+  lines:
+  - GAN-4002
+  source: pid/P-04.xml
+  face: side
+  orientation_deg: 90
+  elevation_m: 2.0
+  location_source: layout/equipment-placement.yaml (discharge on the north side, 3 m east of the centre,
+    not at the motor end where the P&ID draws it; D-055 (8))
+- name: I1
+  lines: []
+  source: pid/P-04.xml
+type_specific:
+  height_m:
+    value: 4.0
+    unit: m
+    source: equipment/equipment-list.yaml dimensions
+  length_m:
+    value: 8.0
+    unit: m
+    source: equipment/equipment-list.yaml dimensions
+  width_m:
+    value: 5.0
+    unit: m
+    source: equipment/equipment-list.yaml dimensions
+  weight_t:
+    value: 25.0
+    unit: t
+    source: equipment/equipment-list.yaml dimensions
+  fluid_power_kw:
+    value: 218.6
+    unit: kW
+    source: '`cheme process simulate` (DWSIM 9.0.5, Peng-Robinson; DESIGN.md D-061): K4102 compressor
+      power 218.6 kW, S9 5.2 bara 13 C -> S9B 9 bara, 1 stage at isentropic efficiency 0.80 (process/simulation.yaml,
+      ASSUMED). Cross-check scripts/datasheet_sizing.py section 3 (DESIGN.md D-063 (5)), ideal gas with
+      Cp/Cv 1.411 at the suction: 219.4 kW'
+    assumed: true
+  shaft_power_kw:
+    value: 218.6
+    unit: kW
+    source: '`cheme process simulate` (DESIGN.md D-061): K4102 shaft 218.6 kW = the compressor power;
+      the gear and bearing losses are in the drive efficiency below'
+    assumed: true
+  electric_power_kw:
+    value: 237.6
+    unit: kW
+    source: 'process/flowsheet.yaml energy stream E5 (calculated, `cheme process simulate`, DESIGN.md
+      D-061): 237.6 kW = shaft / drive efficiency 0.92. The motor stays rated 315 kW (electrical list)'
+    assumed: true
+  drive_efficiency:
+    value: 0.92
+    source: process/simulation.yaml K4102 (ASSUMED, D-057; LV motor 0.94 x gear 0.98)
+    assumed: true
+  isentropic_efficiency:
+    value: 0.8
+    source: process/simulation.yaml K4102 (ASSUMED until the supplier's guarantee)
+    assumed: true
+  max_stage_pressure_ratio:
+    value: 2.0
+    source: DESIGN.md D-053 (ASSUMED; one stage, as the equipment list)
+    assumed: true
+  heat_capacity_ratio:
+    value: 1.4109
+    source: 'scripts/datasheet_sizing.py section 3 (DESIGN.md D-063 (5)): Cp/Cv of S9 at the suction,
+      286.15 K 520 kPa(a), property adapter (thermo 0.6.1, PR); replaces the 1.41 at 298.15 K of D-053'
+    assumed: true
+  process_streams:
+  - stream: S9
+    direction: in
+    title: GAN product
+    source: process/flowsheet.yaml (case design)
+  - stream: S9B
+    direction: out
+    title: GAN to battery limit
+    source: process/flowsheet.yaml (case design)
+  number_of_stages:
+    value: 1
+    unit: ''
+    source: process/simulation.yaml K4102 stages 1 (ratio 1.731 below the 2.0 maximum per stage, D-053)
+    assumed: true
+  stage_pressure_ratio:
+    value: 1.731
+    unit: ''
+    source: 'scripts/datasheet_sizing.py section 3 (DESIGN.md D-063 (5)): 900 / 520 kPa(a)'
+    assumed: true
+  discharge_temperature_k:
+    value: 348.1
+    unit: K
+    source: 'scripts/datasheet_sizing.py section 3 (DESIGN.md D-063 (5)): ideal gas, Cp/Cv 1.411 at the
+      suction, eta_s 0.80 (75.0 C; was 362.5 K from the 25 C suction)'
+    assumed: true
+sizing_basis: []
+notes: 'Oil-free gas path, 1 stage, 5.2 -> 9 bara, 10,000 Nm3/h, 315 kW motor. ASSUMED. Powers from the
+  DWSIM simulation (DESIGN.md D-057, D-061): 218.6 kW at the compressor, 237.6 kW electric with the 13
+  C suction.'

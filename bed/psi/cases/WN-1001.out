@@ -1,0 +1,120 @@
+PSI Analysis and Design
+Version: 0.0.1 
+Design Codes: All Codes
+
+Input File: E:\trae\trae workspace\nsc-ChemE-as-Code\asu-bed\bed\psi\cases\WN-1001.inp 
+
+*** Preprocessing, initializing analysis...
+*** Switching to base units.
+*** Solving primary loadcases...
+*** Solving loadcase l1
+    --> Assembling system stiffness and force matrices.
+
+  0%|          | 0/19 [00:00<?, ?it/s]
+                                      
+
+  0%|          | 0/19 [00:00<?, ?it/s]
+Processing...:   0%|          | 0/19 [00:00<?, ?it/s]
+                                                     
+
+Processing...:   0%|          | 0/19 [00:00<?, ?it/s]
+                                                     
+
+Processing...:   0%|          | 0/19 [00:00<?, ?it/s]
+                                                     
+
+Processing...:   0%|          | 0/19 [00:00<?, ?it/s]
+                                                     
+
+Processing...:   0%|          | 0/19 [00:00<?, ?it/s]
+                                                     
+
+Processing...:   0%|          | 0/19 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\model.py", line 238, in analyze
+    self.parent.analyze(self, mode)
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\model.py", line 323, in analyze
+    static(inst)
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\solvers\static.py", line 58, in static
+    solve(model, loadcase)
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\solvers\static.py", line 118, in solve
+    keg = element.kglobal(model.settings.tref)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\elements.py", line 702, in kglobal
+    return T.transpose() @ self.klocal(temp, sfac) @ T
+                           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\elements.py", line 624, in klocal
+    thk = self.section.thk
+          ^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'thk'
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\reports.py", line 262, in to_screen
+    tqdm.write(self.template.render(version=version,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\templates\single_case_stresses", line 1, in top-level template code
+    {% extends "single_case_report" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\templates\single_case_report", line 1, in top-level template code
+    {% extends "base_report" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\templates\base_report", line 7, in top-level template code
+    {%- block body %}{% endblock -%}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\templates\single_case_stresses", line 13, in block 'body'
+    {%- for point, results in zip(loadcase.points, loadcase.stresses.results) %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\loadcase.py", line 830, in results
+    shoop = self._shoop.results
+            ^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\loadcase.py", line 696, in results
+    return self._values
+           ^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\units.py", line 73, in __get__
+    value = inst.__dict__[self.name]
+            ~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: '_values'
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\reports.py", line 262, in to_screen
+    tqdm.write(self.template.render(version=version,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\templates\single_case_stresses", line 1, in top-level template code
+    {% extends "single_case_report" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\templates\single_case_report", line 1, in top-level template code
+    {% extends "base_report" %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\templates\base_report", line 7, in top-level template code
+    {%- block body %}{% endblock -%}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\templates\single_case_stresses", line 13, in block 'body'
+    {%- for point, results in zip(loadcase.points, loadcase.stresses.results) %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\loadcase.py", line 830, in results
+    shoop = self._shoop.results
+            ^^^^^^^^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\loadcase.py", line 696, in results
+    return self._values
+           ^^^^^^^^^^^^
+  File "E:\trae\trae workspace\nsc-ChemE-as-Code\.venv-psi\Lib\site-packages\psi\units.py", line 73, in __get__
+    value = inst.__dict__[self.name]
+            ~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: '_values'
+
+Done!:   0%|          | 0/19 [00:00<?, ?it/s]        
+Done!: 100%|██████████| 19/19 [00:00<00:00, 293.83it/s]

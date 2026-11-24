@@ -1,0 +1,92 @@
+# Datasheet, first drafted by `cheme datasheets draft` from equipment/equipment-list.yaml, pid/P-01.xml.
+# Final (`draft: false`): every value says where it comes from (source); assumed: true marks a
+# value derived on an assumption, to confirm; a `supplier` or `not_applicable` value gives its
+# reason. Schema: `cheme schema datasheet`.
+tag: F-1101
+type: GasFilter
+service: MAC inlet air filter
+draft: false
+operating:
+  inlet_flow:
+    value: 85840
+    unit: Nm3/h
+    source: 'process/flowsheet.yaml stream S1 (DESIGN.md D-066): 85,840 Nm3/h dry air at the intake (113,329
+      kg/h wet at 80 % RH, 30 C; ~97,600 m3/h actual, scripts/datasheet_sizing.py section 8 (DESIGN.md
+      D-068 (7))); was 76,000'
+    assumed: true
+  rated_flow:
+    value: 90000
+    unit: Nm3/h
+    source: 'DESIGN.md D-066: the MAC rating, about 90,000 Nm3/h dry air; the filter is selected for it'
+    assumed: true
+  inlet_pressure:
+    value: 1.0
+    unit: bar(a)
+    source: ambient air at the intake (design basis site, ASSUMED)
+    assumed: true
+design:
+  pressure_barg:
+    value: 0.1
+    unit: barg
+    source: equipment/equipment-list.yaml
+  temperature_degc:
+    value: 50.0
+    unit: degC
+    source: equipment/equipment-list.yaml
+materials:
+  main:
+    value: CS galvanized
+    source: equipment/equipment-list.yaml
+dimensions:
+  overall_length:
+    value: 6.0
+    unit: m
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.length; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the supplier sets it'
+    assumed: true
+  overall_width:
+    value: 4.0
+    unit: m
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.width; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the supplier sets it'
+    assumed: true
+  overall_height:
+    value: 8.0
+    unit: m
+    source: 'cheme datasheets fill: equipment/equipment-list.yaml dimensions.height; ASSUMED at basic
+      engineering (equipment list header, DESIGN.md D-028): the supplier sets it'
+    assumed: true
+weights:
+  empty:
+    value: 10.0
+    unit: t
+    source: 'DESIGN.md D-081 (5), equipment list dimensions.weight: casing plates 3 mm galvanized steel
+      over the 208 m2 of the 6 x 4 x 8 m house = 4.9 t, doubled for the frame, hoppers, tube sheet,
+      walkway and cartridges (factor 2 ASSUMED). ASSUMED: the filter supplier gives the weight'
+    assumed: true
+nozzles:
+- name: N1
+  dn: 1400
+  lines:
+  - AIR-1001
+  source: pid/P-01.xml
+- name: I1
+  lines: []
+  source: pid/P-01.xml
+type_specific:
+  height_m:
+    value: 8.0
+    unit: m
+    source: equipment/equipment-list.yaml dimensions
+  length_m:
+    value: 6.0
+    unit: m
+    source: equipment/equipment-list.yaml dimensions
+  width_m:
+    value: 4.0
+    unit: m
+    source: equipment/equipment-list.yaml dimensions
+sizing_basis: []
+notes: Self-cleaning pulse-jet cartridges, rated 90,000 Nm3/h (design 85,840 Nm3/h, D-066; +13 % on the
+  former 76,000, D-068 (7)); intake away from hydrocarbon sources (D-010). Filter house 6 x 4 x 8 m kept
+  (ASSUMED; the cartridge count and face velocity are the supplier's).
