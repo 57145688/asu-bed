@@ -1,24 +1,31 @@
 {
-  "generated_at": "2026-11-24T20:53:16.466975+00:00",
-  "plant": "ASU 深冷空分（asu-1, GoO2=99.6% / 400 t/d 液氧 / 6000 Nm³/h 氮 / 18000 kW 电）",
-  "stage": "basic",
-  "kind": "BED 基础工程设计包（basic engineering design）",
-  "level": "BED 基础级：用于方案比选与下一阶段 FEED 设计输入；不用于施工、采购、许可或安全决策",
+  "generated_at": "2026-11-24T21:17:56.424226+00:00",
+  "plant": "ASU 深冷空分（asu-1, 500 t/d GOX / 6000 Nm³/h GAN / 18 MW MAC 电）",
+  "level": "BED 方案级可用：用于方案比选与 FEED 设计输入；不用于施工、采购、许可或安全决策",
   "upstream": "ChemE-as-Code/process-library process:asu-1",
-  "plant_summary": {
-    "feeds": 2,
-    "products": 7,
-    "blocks": 4,
-    "steps": 21,
-    "streams": 50,
-    "hazop_studies": [
-      "H-01",
-      "H-02",
-      "H-03",
-      "H-04"
-    ]
-  },
+  "cheme_version": "cheme-as-code >= 1.5",
+  "freecad_version": "FreeCAD 1.0.0",
   "artifacts": [
+    {
+      "path": "cad/asu-bed.FCStd",
+      "bytes": 432738,
+      "sha256_16": "193ea5e882df1c4a"
+    },
+    {
+      "path": "cad/asu-bed.step",
+      "bytes": 2535271,
+      "sha256_16": "df3efb730b971462"
+    },
+    {
+      "path": "cad/freecad-report.json",
+      "bytes": 194,
+      "sha256_16": "5165a5782e9150fa"
+    },
+    {
+      "path": "cad/plant-model.json",
+      "bytes": 266241,
+      "sha256_16": "9a9f67fc82e0df75"
+    },
     {
       "path": "DESIGN.md",
       "bytes": 471690,
@@ -133,6 +140,16 @@
       "path": "lca/cheme-lca-results.md",
       "bytes": 18368,
       "sha256_16": "65ac37e3a816d75b"
+    },
+    {
+      "path": "MANIFEST.json",
+      "bytes": 6269,
+      "sha256_16": "49320171c2068b47"
+    },
+    {
+      "path": "MANIFEST.md",
+      "bytes": 3172,
+      "sha256_16": "9fa7bec124afff7d"
     },
     {
       "path": "pid/P-01.svg",

@@ -1,17 +1,19 @@
-# ASU 空分厂 BED 包清单
+# ASU BED 包清单
 
-生成时间：2026-11-24T20:53:16.466975+00:00
+生成时间：2026-11-24T21:17:56.424226+00:00
 
-**工厂**：ASU 深冷空分 — 2 feeds / 7 products / 4 blocks / 21 steps / 50 streams
+**工厂**：ASU 深冷空分（asu-1, 500 t/d GOX / 6000 Nm³/h GAN / 18 MW MAC 电）
 
-**HAZOP studies**：H-01, H-02, H-03, H-04
+**上游**：`ChemE-as-Code/process-library process:asu-1`
 
-**上游**：ChemE-as-Code/process-library `processes/asu-1`
-
-> 定位：**BED 基础级**。用于路线比选、规模论证与 FEED 设计输入；不用于施工、采购、许可或安全决策。HAZOP 为 draft，PSI 为保守筛查，LCA 为 gate-to-gate。
+> 定位：**BED 方案级可用**。用于路线比选、规模论证与 FEED 设计输入；不用于施工、采购、许可或安全决策。
 
 | 文件 | 大小 (KB) | SHA256 前 16 位 |
 |---|---:|---|
+| cad/asu-bed.FCStd | 422.6 | `193ea5e882df1c4a` |
+| cad/asu-bed.step | 2475.9 | `df3efb730b971462` |
+| cad/freecad-report.json | 0.2 | `5165a5782e9150fa` |
+| cad/plant-model.json | 260.0 | `9a9f67fc82e0df75` |
 | DESIGN.md | 460.6 | `69ecd5d193ed9b54` |
 | dexpi/dexpi-check.json | 1.0 | `48bd4d927e76ab60` |
 | dexpi/dexpi-check.md | 0.5 | `7a295bc2f24b1fed` |
@@ -35,6 +37,7 @@
 | lca/cheme-lca-inventory.csv | 19.7 | `b229a5596b00a9da` |
 | lca/cheme-lca-results.csv | 9.3 | `bc81556a19677cfe` |
 | lca/cheme-lca-results.md | 17.9 | `65ac37e3a816d75b` |
+| MANIFEST.md | 3.1 | `9fa7bec124afff7d` |
 | pid/P-01.svg | 128.6 | `2652637c5c9301fb` |
 | pid/P-02.svg | 97.7 | `3a90cd2edfe99334` |
 | pid/P-03.svg | 141.9 | `1b6f580a816513a1` |
